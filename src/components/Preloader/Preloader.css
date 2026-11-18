@@ -1,0 +1,169 @@
+/* ==========================================================================
+   CINEMATIC PRELOADER (Reel Style Reference)
+   Pulsing Spark -> Scrambles into "ADIT JAIN" -> Morphs into "PORTFOLIO" ->
+   Slides down as curtain lifts to reveal central Halftone Portrait landing page.
+   ========================================================================== */
+
+.cinematic-preloader {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-color: var(--color-charcoal);
+  z-index: var(--z-preloader);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.cinematic-preloader.is-skipped {
+  pointer-events: none;
+}
+
+/* ==========================================
+   TOP BAR: Location Tag + Skip Button
+   ========================================== */
+.preloader-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--container-pad);
+  position: relative;
+  z-index: 10;
+}
+
+.preloader-brand-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  color: var(--color-sand-muted);
+  text-transform: uppercase;
+}
+
+.preloader-skip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.9rem;
+  background: transparent;
+  border: 1px solid var(--color-sand-border);
+  color: var(--color-sand-muted);
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.preloader-skip-btn:hover,
+.preloader-skip-btn:focus-visible {
+  color: var(--color-sand-highlight);
+  border-color: var(--color-sand);
+}
+
+.preloader-skip-btn .key-hint {
+  display: inline-block;
+  padding: 0.15rem 0.35rem;
+  border: 1px solid rgba(216, 203, 179, 0.2);
+  font-size: 0.6rem;
+  line-height: 1;
+  color: var(--color-sand-dim);
+}
+
+/* ==========================================
+   CENTER REEL STAGE: Glowing Spark + Morphing Title
+   ========================================== */
+.preloader-center-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  padding: 0 var(--space-md);
+  z-index: 10;
+}
+
+/* Glowing Sand Spark / Orb (starts small, glows, anchors center) */
+.preloader-spark-orb {
+  width: 14px;
+  height: 14px;
+  background-color: var(--color-sand);
+  border-radius: 50%;
+  box-shadow: 0 0 24px 8px rgba(216, 203, 179, 0.5), 0 0 48px 16px rgba(216, 203, 179, 0.25);
+  margin-bottom: var(--space-md);
+  opacity: 0;
+  animation: sparkPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes sparkPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 24px 8px rgba(216, 203, 179, 0.5), 0 0 48px 16px rgba(216, 203, 179, 0.25);
+  }
+  50% {
+    transform: scale(1.35);
+    box-shadow: 0 0 36px 12px rgba(216, 203, 179, 0.7), 0 0 64px 24px rgba(216, 203, 179, 0.35);
+  }
+}
+
+/* Morphing Title: "ADIT JAIN" -> "PORTFOLIO" */
+.preloader-morph-title {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 9vw, 8rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-sand-highlight);
+  line-height: 1;
+  margin: 0;
+  text-transform: uppercase;
+  min-height: 1.1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Scramble Glyph (glitch characters during morph) */
+.scramble-char {
+  color: var(--color-sand);
+  opacity: 0.65;
+  font-weight: 400;
+}
+
+/* Subtitle Tag */
+.preloader-sub-tag {
+  font-family: var(--font-body);
+  font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+  letter-spacing: 0.08em;
+  color: var(--color-sand-muted);
+  text-transform: uppercase;
+  margin-top: var(--space-sm);
+  opacity: 0;
+}
+
+/* Subtle background halftone grid texture */
+.preloader-bg-stipple {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(216, 203, 179, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+/* ==========================================
+   REDUCED MOTION
+   ========================================== */
+@media (prefers-reduced-motion: reduce) {
+  .cinematic-preloader {
+    display: none;
+  }
+}

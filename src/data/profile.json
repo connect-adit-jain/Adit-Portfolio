@@ -1,0 +1,29 @@
+{
+  "name": "Adit Jain",
+  "role": "Software Engineering Student | Full-Stack & AI Developer | Robotics Enthusiast",
+  "shortRole": "Software Engineer & Robotics Enthusiast",
+  "institution": "NIAT Jaipur — Vivekananda Global University",
+  "degree": "B.Tech, Software Engineering (2nd Year, 3rd Semester)",
+  "cgpa": "8.65",
+  "classXII": "86.6%",
+  "location": "Jaipur, Rajasthan, India",
+  "email": "connect.aditjain@gmail.com",
+  "phone": "+91-9571042644",
+  "github": "https://github.com/connect-adit-jain",
+  "linkedin": "https://www.linkedin.com/in/adit-jain-177380370",
+  "studioUrl": "https://adit-bfsc.vercel.app/",
+  "statusNotice": "Open to Software Engineering & Robotics Internships",
+  "headline": "Full-Stack, AI, and Robotics Projects that Solve Real-World Problems",
+  "heroDescription": "Second-year Software Engineering student at NIAT Jaipur (Vivekananda Global University), co-founder of Maggieaurcode, and robotics enthusiast building production-grade web solutions and AI-enabled hardware.",
+  "aboutText": [
+    "I study Software Engineering (B.Tech, second year, third semester) at NIAT Jaipur – Vivekananda Global University in Jaipur, Rajasthan, maintaining an 8.65 CGPA after graduating Class XII with 86.6%.",
+    "My engineering work merges three distinct domains: Full-Stack & Applied AI, Edge Robotics & Embedded Hardware, and Entrepreneurial Delivery. At Maggieaurcode, I build and deploy production websites with AI capabilities for local businesses. In robotics, I lead Team RoboLyte developing edge-AI inspection rovers with thermal and gas telemetry.",
+    "Winner of the SKIT IEEE 26 Hackathon (₹35,000 first prize) and recipient of ₹20,000 VGU startup funding as team leader, I focus on building verified, testable engineering solutions without fabricated claims."
+  ],
+  "stats": [
+    { "label": "Academic CGPA", "value": "8.65" },
+    { "label": "SKIT IEEE 26", "value": "1st Prize" },
+    { "label": "VGU Startup Funding", "value": "₹20,000" },
+    { "label": "Makers Conclave", "value": "14th Finalist" }
+  ]
+}

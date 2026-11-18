@@ -1,0 +1,38 @@
+[
+  {
+    "id": "maggieaurcode",
+    "role": "Co-Founder & Full-Stack Developer",
+    "organization": "Maggieaurcode",
+    "location": "Kota, Rajasthan",
+    "timeline": "Ongoing",
+    "type": "Entrepreneurship & Client Delivery",
+    "status": "Active Studio",
+    "summary": "Co-founded and operate a two-person web development studio delivering commercial web solutions and AI-assisted experiences for local Kota businesses, generating real client revenue.",
+    "deliverables": [
+      "Architected and deployed live production websites for regional businesses including K.V Stone, Kota Furniture Hub, and Prakash Sports.",
+      "Engineered an interactive Gemini-powered 'AI Stone Advisor' for K.V Stone to match architectural stone inventory to customer specifications.",
+      "Accelerated development workflows utilizing modern web tooling and deployed resilient production frontends on Vercel and Netlify.",
+      "Launched and maintained the studio's live portfolio portal at adit-bfsc.vercel.app."
+    ],
+    "skills": ["React.js", "JavaScript", "Gemini API", "Vercel", "Netlify", "AI Builder Tools", "Client Relations"],
+    "link": "https://adit-bfsc.vercel.app/"
+  },
+  {
+    "id": "flyrank",
+    "role": "AI Intern (Backend AI Engineering & AI Fluency)",
+    "organization": "FlyRank",
+    "location": "Remote",
+    "timeline": "1 Jul 2026 – 16 Oct 2026",
+    "type": "Technical Internship",
+    "status": "Completed",
+    "summary": "Completed the dual-track FlyRank AI Internship spanning Backend AI Engineering and AI Fluency, focusing on high-throughput backend APIs, transactional persistence, and automated billing logic.",
+    "deliverables": [
+      "Engineered the capstone Usage Metering & Billing Engine using Python and FastAPI, featuring idempotent Stripe API integration in test mode.",
+      "Constructed secure relational database backends with authentication and CRUD endpoints using SQLite and PostgreSQL.",
+      "Built an ethical, rate-limited polite web scraper for structured data acquisition.",
+      "Shipped an AI Fluency portfolio platform integrating a Claude-driven chat agent, technical case studies, and a multi-level prompt-engineering ladder."
+    ],
+    "skills": ["Python", "FastAPI", "Stripe API", "PostgreSQL", "SQLite", "REST APIs", "Claude API", "Prompt Engineering"],
+    "link": null
+  }
+]

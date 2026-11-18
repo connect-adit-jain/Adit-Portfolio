@@ -1,0 +1,85 @@
+.editorial-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 0;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Sizes */
+.btn-sm {
+  font-size: var(--text-xs);
+  padding: 0.5rem 1rem;
+}
+
+.btn-md {
+  font-size: var(--text-sm);
+  padding: 0.75rem 1.5rem;
+}
+
+.btn-lg {
+  font-size: var(--text-base);
+  padding: 1rem 2rem;
+}
+
+/* Primary: Solid Sand background with Charcoal text */
+.btn-primary {
+  background-color: var(--color-sand);
+  color: var(--color-charcoal);
+  border: 1px solid var(--color-sand);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-sand-highlight);
+  border-color: var(--color-sand-highlight);
+  color: var(--color-charcoal-deep);
+  transform: translateY(-2px);
+}
+
+/* Secondary / Outline: Charcoal background with Sand border and text */
+.btn-secondary,
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-sand);
+  border: 1px solid var(--color-sand-border);
+}
+
+.btn-secondary:hover,
+.btn-outline:hover {
+  background-color: var(--color-sand);
+  border-color: var(--color-sand);
+  color: var(--color-charcoal);
+  transform: translateY(-2px);
+}
+
+/* Text Variant */
+.btn-text {
+  background: transparent;
+  color: var(--color-sand);
+  border: none;
+  padding-left: 0;
+  padding-right: 0;
+  text-transform: none;
+}
+
+.btn-text:hover {
+  color: var(--color-sand-highlight);
+  opacity: 0.85;
+}
+
+.btn-icon-suffix {
+  display: inline-flex;
+  transition: transform var(--transition-fast);
+}
+
+.editorial-btn:hover .btn-icon-suffix {
+  transform: translate(2px, -2px);
+}

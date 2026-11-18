@@ -1,0 +1,61 @@
+/* ========================================================
+   RESPONSIVENESS & ACCESSIBILITY
+   ======================================================== */
+
+@media (max-width: 1024px) {
+  .editorial-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --container-pad: 1.25rem;
+  }
+
+  .section-spacing {
+    padding-top: clamp(3rem, 6vw, 4.5rem);
+    padding-bottom: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  /* Prevent any horizontal overflow on mobile */
+  body, html {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  .custom-cursor {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+  }
+
+  .status-pill {
+    font-size: 0.68rem;
+    padding: 0.2rem 0.5rem;
+  }
+}
+
+/* ========================================================
+   REDUCED MOTION SUPPORT (PREFERS-REDUCED-MOTION)
+   ======================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .custom-cursor {
+    display: none !important;
+  }
+}

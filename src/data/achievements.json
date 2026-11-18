@@ -1,0 +1,62 @@
+[
+  {
+    "id": "skit-ieee-26",
+    "title": "1st Place Winner (₹35,000 First Prize)",
+    "competition": "SKIT IEEE 26 Hackathon",
+    "organization": "Swami Keshvanand Institute of Technology (SKIT) IEEE",
+    "year": "2026",
+    "role": "Contestant",
+    "award": "₹35,000 First Prize",
+    "description": "Secured first position competing against regional university engineering teams, delivering an innovative software and system solution under competitive hackathon judging rubrics."
+  },
+  {
+    "id": "vgu-startup-funding",
+    "title": "₹20,000 Startup Venture Funding",
+    "competition": "Vivekananda Global University (VGU) Startup Grant",
+    "organization": "Vivekananda Global University (VGU)",
+    "year": "2026",
+    "role": "Team Leader",
+    "award": "₹20,000 Grant",
+    "description": "Awarded ₹20,000 in institutional startup venture funding by VGU after presenting entrepreneurial viability, commercial execution, and product-market roadmap."
+  },
+  {
+    "id": "shodh-prayas-tdp",
+    "title": "1st Place & Best Oral Presentation Award",
+    "competition": "Shodh Prayas Event, T.D.P Conclave",
+    "organization": "Vivekananda Global University (VGU)",
+    "year": "2026",
+    "role": "Team Leader",
+    "award": "1st Place & Best Oral Presentation",
+    "description": "Clinched first place and the Best Oral Presentation citation for rigorous research defense and presentation clarity during the T.D.P Conclave academic competition."
+  },
+  {
+    "id": "makers-conclave-2026",
+    "title": "Finalist — 14th Place (Physical AI Challenge)",
+    "competition": "Makers Conclave 2026",
+    "organization": "NxtWave Institute of Advanced Technology (NIAT), Hyderabad",
+    "year": "2026",
+    "role": "Team Leader (Team RoboLyte)",
+    "award": "National Finalist (14th Place)",
+    "description": "Selected among top nationwide engineering teams with MinerBot/PipeGuard, an edge-AI inspection rover featuring multi-sensor and thermal monitoring for hazardous environments."
+  },
+  {
+    "id": "brave-accelerator",
+    "title": "Finalist — BRAVE Entrepreneurship Accelerator",
+    "competition": "BRAVE Accelerator (Apr–Jul 2026)",
+    "organization": "NxtWave Institute of Advanced Technology (NIAT), Hyderabad",
+    "year": "2026",
+    "role": "Team Leader",
+    "award": "Accelerator Finalist",
+    "description": "Completed the intensive four-month venture incubator program, validating business models, financial projections, and product engineering execution."
+  },
+  {
+    "id": "sih-2026",
+    "title": "Smart India Hackathon 2026 Submissions",
+    "competition": "Smart India Hackathon (SIH 2026)",
+    "organization": "Government of India / AICTE",
+    "year": "2026",
+    "role": "Lead Contributor / Team Leader",
+    "award": "National Challenge Entries",
+    "description": "Formulated two verified national engineering solutions: SIH26039 (Government of Jharkhand mine-rescue rover with wired tether architecture) and SIH26183 (Ministry of Home Affairs crypto fraud tracing and VASP attribution)."
+  }
+]

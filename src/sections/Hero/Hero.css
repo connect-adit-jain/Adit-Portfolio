@@ -1,0 +1,324 @@
+/* ==========================================================================
+   HERO SECTION (Reel Reference Landing Page)
+   Central Halftone Portrait with Overlapping "PORTFOLIO" Title
+   Grounded in Charcoal #1E1E1C and Sand #D8CBB3
+   ========================================================================== */
+
+.hero-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: calc(4.5rem + clamp(1rem, 3vw, 2.5rem));
+  padding-bottom: clamp(2rem, 4vw, 3.5rem);
+  position: relative;
+  border-bottom: 1px solid var(--color-sand-border);
+  background-color: var(--color-charcoal);
+  overflow: hidden;
+}
+
+.hero-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100vh - 7.5rem);
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================
+   TOP EYEBROW BAR
+   ========================================== */
+.hero-eyebrow-tag {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  color: var(--color-sand-muted);
+  text-transform: uppercase;
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid rgba(216, 203, 179, 0.12);
+  margin-bottom: var(--space-md);
+  opacity: 0; /* GSAP animates in */
+}
+
+.location-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--color-sand);
+}
+
+.separator-slash {
+  color: rgba(216, 203, 179, 0.3);
+}
+
+.cgpa-tag {
+  color: var(--color-sand-highlight);
+  font-weight: 600;
+}
+
+/* ==========================================
+   CENTER STAGE: Halftone Portrait + Overlapping "PORTFOLIO"
+   Matches the reel composition with portrait centered & title across lower chest
+   ========================================== */
+.hero-center-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: var(--space-sm) 0;
+  width: 100%;
+}
+
+/* Halftone Portrait Stage */
+.hero-portrait-stage {
+  width: 100%;
+  max-width: 620px;
+  height: clamp(380px, 48vh, 540px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-portrait-stage .halftone-particle-container {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+/* Overlapping Title: "PORTFOLIO" */
+.hero-title-overlay {
+  position: absolute;
+  bottom: clamp(10px, 3vh, 35px);
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hero-portfolio-title {
+  font-family: var(--font-heading);
+  font-size: clamp(3.2rem, 11vw, 8.5rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 0.9;
+  color: var(--color-sand-highlight);
+  text-transform: uppercase;
+  margin: 0;
+  text-shadow: 0 4px 28px rgba(30, 30, 28, 0.85);
+  opacity: 0; /* GSAP animates in */
+}
+
+.hero-portfolio-sub {
+  font-family: var(--font-body);
+  font-size: clamp(0.85rem, 1.4vw, 1.25rem);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-sand);
+  margin-top: 0.4rem;
+  text-shadow: 0 2px 14px rgba(30, 30, 28, 0.9);
+  opacity: 0; /* GSAP animates in */
+}
+
+/* ==========================================
+   BOTTOM DOSSIER: Summary Left | Stats Right
+   ========================================== */
+.hero-bottom-dossier {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: center;
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(216, 203, 179, 0.12);
+  margin-top: var(--space-md);
+  opacity: 0; /* GSAP animates in */
+}
+
+/* Left Column */
+.dossier-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.hero-summary {
+  font-size: clamp(0.9rem, 1.05vw, 1.05rem);
+  color: var(--color-sand-dim);
+  line-height: 1.6;
+  max-width: 58ch;
+  margin: 0;
+}
+
+.hero-cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: 0.25rem;
+}
+
+.hero-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.6rem;
+  background-color: var(--color-sand);
+  color: var(--color-charcoal);
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all var(--transition-fast);
+  border: 1px solid var(--color-sand);
+}
+
+.hero-btn-primary:hover {
+  background-color: var(--color-sand-highlight);
+  color: var(--color-charcoal-deep);
+  transform: translateY(-2px);
+}
+
+.hero-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.6rem;
+  background-color: transparent;
+  color: var(--color-sand);
+  border: 1px solid var(--color-sand-border);
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all var(--transition-fast);
+}
+
+.hero-btn-secondary:hover {
+  background-color: var(--color-sand);
+  color: var(--color-charcoal);
+  transform: translateY(-2px);
+}
+
+/* Right Column: Confirmed Stats */
+.dossier-right-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background-color: rgba(216, 203, 179, 0.03);
+  border: 1px solid rgba(216, 203, 179, 0.12);
+}
+
+.dossier-right-col .stat-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.dossier-right-col .stat-number {
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  font-weight: 700;
+  color: var(--color-sand-highlight);
+  line-height: 1;
+}
+
+.dossier-right-col .stat-desc {
+  font-size: 0.68rem;
+  color: var(--color-sand-muted);
+  margin-top: 0.25rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================
+   SCROLL INDICATOR
+   ========================================== */
+.hero-scroll-indicator {
+  margin-top: var(--space-md);
+  padding-top: var(--space-sm);
+  display: flex;
+  justify-content: center;
+  opacity: 0; /* GSAP animates in */
+}
+
+.hero-scroll-indicator a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-sand-muted);
+  transition: color var(--transition-fast);
+}
+
+.hero-scroll-indicator a:hover {
+  color: var(--color-sand-highlight);
+}
+
+.scroll-arrow {
+  display: inline-block;
+  animation: bounceDown 2s infinite ease-in-out;
+}
+
+@keyframes bounceDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+@media (max-width: 900px) {
+  .hero-bottom-dossier {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .dossier-right-col {
+    padding: var(--space-sm);
+  }
+
+  .hero-portrait-stage {
+    height: clamp(320px, 42vh, 440px);
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-cta-group {
+    flex-direction: column;
+  }
+
+  .hero-btn-primary,
+  .hero-btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dossier-right-col {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero-portfolio-title {
+    font-size: clamp(2.8rem, 13vw, 4.5rem);
+  }
+
+  .hero-portfolio-sub {
+    font-size: 0.78rem;
+  }
+}
