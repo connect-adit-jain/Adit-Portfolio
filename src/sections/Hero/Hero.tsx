@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowDown, ArrowUpRight, Compass } from 'lucide-react';
 import profileData from '../../data/profile.json';
 import { gsap } from '../../animations/gsap';
@@ -13,59 +13,100 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = () => {
   const heroRef = useRef<HTMLElement>(null);
 
+  // Determine whether preloader is covering screen; if not, animate immediately
+  const [shouldAnimate, setShouldAnimate] = useState(() => {
+    if (typeof document === 'undefined') return true;
+    return !document.querySelector('.cinematic-preloader');
+  });
+
   useEffect(() => {
-    if (isReducedMotion() || !heroRef.current) return;
+    const handleStart = () => {
+      setShouldAnimate(true);
+    };
+
+    window.addEventListener('start-hero-reveal', handleStart);
+    window.addEventListener('preloader-complete', handleStart);
+
+    // Fallback timer if preloader was dismissed or not present
+    const timer = setTimeout(() => {
+      setShouldAnimate(true);
+    }, 6000);
+
+    return () => {
+      window.removeEventListener('start-hero-reveal', handleStart);
+      window.removeEventListener('preloader-complete', handleStart);
+      clearTimeout(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!shouldAnimate || !heroRef.current) return;
+
+    if (isReducedMotion()) {
+      gsap.set(
+        [
+          '.hero-eyebrow-tag',
+          '.hero-name-badge',
+          '.hero-portfolio-title',
+          '.hero-portfolio-sub',
+          '.hero-bottom-dossier',
+          '.hero-scroll-indicator',
+        ],
+        { opacity: 1, y: 0 }
+      );
+      return;
+    }
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        defaults: { ease: 'power3.out' },
-        delay: 0.35,
-      });
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
+      // Step 1: Reveal "PORTFOLIO" title and name badge while particles are combining (0.2s - 1.1s)
       tl.fromTo(
-        '.hero-eyebrow-tag',
+        '.hero-name-badge',
         { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.6 }
+        { opacity: 1, y: 0, duration: 0.6, delay: 0.25 }
       )
         .fromTo(
-          '.hero-name-badge',
-          { opacity: 0, y: 15 },
-          { opacity: 1, y: 0, duration: 0.5 },
-          '-=0.3'
-        )
-        .fromTo(
           '.hero-portfolio-title',
-          { opacity: 0, y: 35, scale: 0.96 },
+          { opacity: 0, y: 30, scale: 0.96 },
           { opacity: 1, y: 0, scale: 1, duration: 0.85, ease: 'power4.out' },
-          '-=0.3'
+          '-=0.35'
         )
         .fromTo(
           '.hero-portfolio-sub',
-          { opacity: 0, y: 15 },
+          { opacity: 0, y: 12 },
           { opacity: 1, y: 0, duration: 0.6 },
           '-=0.4'
+        )
+        // Step 2: THEN, right as the dots finish combining into the exact portrait (~1.5s),
+        // reveal the specs on the side corners!
+        .fromTo(
+          '.hero-eyebrow-tag',
+          { opacity: 0, y: -15 },
+          { opacity: 1, y: 0, duration: 0.65 },
+          '+=0.45'
         )
         .fromTo(
           '.hero-bottom-dossier',
           { opacity: 0, y: 25 },
-          { opacity: 1, y: 0, duration: 0.7 },
-          '-=0.3'
+          { opacity: 1, y: 0, duration: 0.75 },
+          '-=0.45'
         )
         .fromTo(
           '.hero-scroll-indicator',
           { opacity: 0 },
           { opacity: 1, duration: 0.5 },
-          '-=0.3'
+          '-=0.2'
         );
     }, heroRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [shouldAnimate]);
 
   return (
     <section id="hero" ref={heroRef} className="hero-section" aria-label="Introduction">
       <div className="container hero-container">
-        {/* Top Eyebrow Bar */}
+        {/* Top Corner Eyebrow Bar */}
         <div className="hero-eyebrow-tag">
           <span className="location-pill">
             <Compass size={13} aria-hidden="true" />
@@ -77,16 +118,16 @@ export const Hero: React.FC<HeroProps> = () => {
           <span className="cgpa-tag">CGPA: {profileData.cgpa}</span>
         </div>
 
-        {/* Centerpiece: Halftone Portrait with Overlapping "PORTFOLIO" Title */}
+        {/* Centerpiece: Halftone Portrait assembled by combining dots + Overlapping "PORTFOLIO" Title */}
         <div className="hero-center-stage">
-          {/* Halftone Portrait: Settled with interactive mouse parallax on loaded page */}
+          {/* Halftone Portrait: Combines dots into place slowly taking 1.6s */}
           <div className="hero-portrait-stage">
             <HalftoneParticleReveal
               className="hero-portrait"
-              settledImmediately={true}
-              autoStart={false}
-              duration={1.8}
-              initialDelay={0.0}
+              settledImmediately={false}
+              autoStart={shouldAnimate}
+              duration={1.6}
+              initialDelay={0.15}
               interactiveParallax={true}
               aspectRatioFit="contain"
               verticalAlign="bottom"
@@ -101,9 +142,9 @@ export const Hero: React.FC<HeroProps> = () => {
           </div>
         </div>
 
-        {/* Flanking Editorial Details: Verified Summary on Left, Confirmed Stats on Right */}
+        {/* Flanking Editorial Details: Specs & Bio on Left Corner, Confirmed Stats on Right Corner */}
         <div className="hero-bottom-dossier">
-          {/* Left Column: Summary + Action CTAs */}
+          {/* Left Column: Summary Specs + Action CTAs */}
           <div className="dossier-left-col">
             <p className="hero-summary">
               {profileData.heroDescription}
@@ -121,7 +162,7 @@ export const Hero: React.FC<HeroProps> = () => {
             </div>
           </div>
 
-          {/* Right Column: Confirmed Accolades & Metrics */}
+          {/* Right Column: Confirmed Accolades & Metric Specs */}
           <div className="dossier-right-col">
             <div className="stat-card">
               <span className="stat-number">8.65</span>

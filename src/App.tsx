@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar/Navbar';
 import { Footer } from './components/Footer/Footer';
@@ -12,8 +12,16 @@ const AppContent: React.FC = () => {
   // Always show preloader on every page load/reload
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
   const handlePreloaderComplete = () => {
     setLoading(false);
+    window.scrollTo(0, 0);
     // Dispatch custom event so Home/Hero knows portrait should be settled
     window.dispatchEvent(new Event('preloader-complete'));
   };
