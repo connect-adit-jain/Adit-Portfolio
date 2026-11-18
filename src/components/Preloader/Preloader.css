@@ -1,7 +1,11 @@
 /* ==========================================================================
-   CINEMATIC PRELOADER (Reel Style Reference)
-   Pulsing Spark -> Scrambles into "ADIT JAIN" -> Morphs into "PORTFOLIO" ->
-   Slides down as curtain lifts to reveal central Halftone Portrait landing page.
+   CINEMATIC PRELOADER (Reel Sequence Reference)
+   1. Pulsing Sand Spark
+   2. Scramble to "ADIT JAIN" + Subtitle
+   3. Morph into "PORTFOLIO"
+   4. Above "PORTFOLIO", particles actively stream in and assemble Adit's portrait
+   5. Held for a moment so the particle-generated portrait is clearly seen
+   6. Curtain lifts and the loaded main portfolio page is revealed
    ========================================================================== */
 
 .cinematic-preloader {
@@ -30,7 +34,7 @@
   justify-content: space-between;
   padding: var(--space-md) var(--container-pad);
   position: relative;
-  z-index: 10;
+  z-index: 20;
 }
 
 .preloader-brand-tag {
@@ -77,7 +81,7 @@
 }
 
 /* ==========================================
-   CENTER REEL STAGE: Glowing Spark + Morphing Title
+   CENTER REEL STAGE: Portrait Canvas + Morphing Text
    ========================================== */
 .preloader-center-stage {
   flex: 1;
@@ -89,9 +93,39 @@
   text-align: center;
   padding: 0 var(--space-md);
   z-index: 10;
+  width: 100%;
 }
 
-/* Glowing Sand Spark / Orb (starts small, glows, anchors center) */
+/* Living Particle Portrait Container (assembled above PORTFOLIO) */
+.preloader-portrait-wrapper {
+  width: 100%;
+  max-width: 580px;
+  height: clamp(320px, 46vh, 480px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+  opacity: 0; /* GSAP animates in when particles trigger */
+  margin-bottom: -35px; /* Overlap with title like in reel */
+  z-index: 1;
+}
+
+.preloader-particle-canvas {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+/* Text Container */
+.preloader-text-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* Glowing Sand Spark / Orb */
 .preloader-spark-orb {
   width: 14px;
   height: 14px;
@@ -117,17 +151,18 @@
 /* Morphing Title: "ADIT JAIN" -> "PORTFOLIO" */
 .preloader-morph-title {
   font-family: var(--font-heading);
-  font-size: clamp(3rem, 9vw, 8rem);
+  font-size: clamp(3.2rem, 10vw, 8rem);
   font-weight: 700;
   letter-spacing: 0.04em;
   color: var(--color-sand-highlight);
-  line-height: 1;
+  line-height: 0.95;
   margin: 0;
   text-transform: uppercase;
   min-height: 1.1em;
   display: flex;
   align-items: center;
   justify-content: center;
+  text-shadow: 0 4px 28px rgba(30, 30, 28, 0.9);
 }
 
 /* Scramble Glyph (glitch characters during morph) */

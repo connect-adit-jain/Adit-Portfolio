@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { ArrowRight, Compass } from 'lucide-react';
 import { gsap } from '../../animations/gsap';
 import { isReducedMotion } from '../../animations/animationPresets';
+import { HalftoneParticleReveal } from '../HalftoneParticleReveal/HalftoneParticleReveal';
 import './Preloader.css';
 
 interface PreloaderProps {
@@ -37,12 +38,11 @@ class TextScramble {
     });
 
     this.queue = [];
-    // Slightly more frames per character for a deliberate, cinematic scramble
     for (let i = 0; i < length; i++) {
       const from = oldText[i] || '';
       const to = newText[i] || '';
-      const start = Math.floor(Math.random() * 16);
-      const end = start + Math.floor(Math.random() * 24) + 14;
+      const start = Math.floor(Math.random() * 14);
+      const end = start + Math.floor(Math.random() * 20) + 12;
       this.queue.push({ from, to, start, end });
     }
 
@@ -65,7 +65,7 @@ class TextScramble {
         complete++;
         output += to;
       } else if (this.frame >= start) {
-        if (!char || Math.random() < 0.24) {
+        if (!char || Math.random() < 0.25) {
           char = this.chars[Math.floor(Math.random() * this.chars.length)];
           this.queue[i].char = char;
         }
@@ -94,12 +94,14 @@ class TextScramble {
 
 export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const portraitWrapRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
   const orbRef = useRef<HTMLDivElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
   const skipBtnRef = useRef<HTMLButtonElement>(null);
   const scramblerRef = useRef<TextScramble | null>(null);
 
+  const [startParticles, setStartParticles] = useState(false);
   const [isSkipped, setIsSkipped] = useState(false);
   const isCompletedRef = useRef(false);
 
@@ -113,7 +115,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
       return;
     }
 
-    // Curtain exit animation upward into the Hero
+    // Curtain exit animation upward into the loaded Hero page
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         onComplete: () => {
@@ -121,16 +123,16 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         },
       });
 
-      tl.to([textRef.current, subRef.current, orbRef.current, skipBtnRef.current], {
+      tl.to([portraitWrapRef.current, textRef.current, subRef.current, skipBtnRef.current], {
         opacity: 0,
-        y: -30,
-        duration: 0.5,
+        y: -35,
+        duration: 0.45,
         ease: 'power2.in',
       }).to(
         containerRef.current,
         {
           yPercent: -100,
-          duration: 0.8,
+          duration: 0.75,
           ease: 'power4.inOut',
         },
         '-=0.15'
@@ -167,48 +169,63 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
     const ctx = gsap.context(() => {
       const masterTl = gsap.timeline();
 
-      // Step 1: Center glowing Sand spark pulses with gentle breath (0.0s – 0.8s)
+      // Step 1: Center glowing Sand spark pulses (0.0s – 0.6s)
       masterTl
         .fromTo(
           orbRef.current,
           { scale: 0, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(1.7)' }
+          { scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(1.8)' }
         )
-        // Step 2: Scramble in the name "ADIT JAIN" (takes ~1.2s)
+        // Step 2: Scramble in the name "ADIT JAIN" (0.6s – 1.8s)
         .call(async () => {
           if (scramblerRef.current) {
             await scramblerRef.current.setText('ADIT JAIN');
           }
-        }, undefined, '+=0.15')
+        }, undefined, '+=0.1')
         .fromTo(
           subRef.current,
           { opacity: 0, y: 12 },
-          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-          '+=0.8'
+          { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+          '+=0.6'
         )
-        // Step 3: Generous pause for impact on "ADIT JAIN" so it can be read clearly (1.2s hold)
-        // Step 4: Morph "ADIT JAIN" into "PORTFOLIO" (~1.3s)
+        // Step 3: Hold on "ADIT JAIN" (1.8s – 2.8s)
+        // Step 4: Morph "ADIT JAIN" into "PORTFOLIO" (2.8s – 3.8s)
         .call(async () => {
           if (scramblerRef.current) {
             await scramblerRef.current.setText('PORTFOLIO');
           }
-        }, undefined, '+=1.2')
+        }, undefined, '+=1.0')
         .to(subRef.current, {
           opacity: 0,
           y: -10,
-          duration: 0.35,
+          duration: 0.3,
         }, '-=0.2')
-        // Step 5: Pause on "PORTFOLIO" (0.9s hold)
-        // Step 6: "PORTFOLIO" slides down as the curtain lifts into the Hero section
-        .to(textRef.current, {
-          y: 45,
-          opacity: 0.9,
-          duration: 0.6,
-          ease: 'power3.in',
-        }, '+=0.9')
+        .to(orbRef.current, {
+          opacity: 0,
+          scale: 0.5,
+          duration: 0.3,
+        }, '-=0.3')
+        // Step 5: Particles arrive and assemble the image above "PORTFOLIO" (3.8s – 5.8s)
+        .call(() => {
+          setStartParticles(true);
+        }, undefined, '+=0.2')
+        .fromTo(
+          portraitWrapRef.current,
+          { opacity: 0, scale: 0.96 },
+          { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' },
+          '<'
+        )
+        // Move "PORTFOLIO" slightly down to overlap the lower chest
+        .to(
+          textRef.current,
+          { y: 25, duration: 0.6, ease: 'power2.out' },
+          '<'
+        )
+        // Step 6: Hold the assembled particle portrait for a satisfying moment (5.8s – 7.2s)
+        // Step 7: Curtain exit upward to load the next page (7.2s+)
         .call(() => {
           finishPreloader();
-        }, undefined, '+=0.1');
+        }, undefined, '+=3.2');
     }, containerRef);
 
     return () => {
@@ -248,20 +265,37 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         </button>
       </div>
 
-      {/* Center Reel Stage: Glowing Spark + Morphing Typography */}
+      {/* Center Reel Stage: Particle Image Canvas + Morphing Typography */}
       <div className="preloader-center-stage">
-        {/* Glowing Sand Dot / Spark with Luminous Halo */}
-        <div ref={orbRef} className="preloader-spark-orb" aria-hidden="true" />
+        {/* Living Particle Canvas: Particles stream in to assemble Adit's portrait */}
+        <div ref={portraitWrapRef} className="preloader-portrait-wrapper">
+          <HalftoneParticleReveal
+            className="preloader-particle-canvas"
+            autoStart={startParticles}
+            settledImmediately={false}
+            duration={2.0}
+            initialDelay={0.0}
+            aspectRatioFit="contain"
+            verticalAlign="bottom"
+            interactiveParallax={false}
+          />
+        </div>
 
-        {/* Dynamic Morphing Text: "ADIT JAIN" -> "PORTFOLIO" */}
-        <h1 ref={textRef} className="preloader-morph-title">
-          <span className="scramble-char">!</span>
-        </h1>
+        {/* Text Container: Spark + Morphing Title */}
+        <div className="preloader-text-area">
+          {/* Glowing Sand Dot / Spark */}
+          <div ref={orbRef} className="preloader-spark-orb" aria-hidden="true" />
 
-        {/* Subtitle that appears with name */}
-        <p ref={subRef} className="preloader-sub-tag">
-          Software Engineer &amp; Robotics Enthusiast
-        </p>
+          {/* Dynamic Morphing Title: "ADIT JAIN" -> "PORTFOLIO" */}
+          <h1 ref={textRef} className="preloader-morph-title">
+            <span className="scramble-char">!</span>
+          </h1>
+
+          {/* Subtitle that appears with name */}
+          <p ref={subRef} className="preloader-sub-tag">
+            Software Engineer &amp; Robotics Enthusiast
+          </p>
+        </div>
       </div>
 
       {/* Subtle Background Halftone Grid */}

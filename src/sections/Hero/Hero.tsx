@@ -73,14 +73,14 @@ export const Hero: React.FC<HeroProps> = () => {
 
         {/* Centerpiece: Halftone Portrait with Overlapping "PORTFOLIO" Title (Reel Reference) */}
         <div className="hero-center-stage">
-          {/* Halftone Portrait: Living particles assemble the portrait on load */}
+          {/* Halftone Portrait: Settled with interactive mouse parallax on loaded page */}
           <div className="hero-portrait-stage">
             <HalftoneParticleReveal
               className="hero-portrait"
-              settledImmediately={false}
-              autoStart={true}
-              duration={2.5}
-              initialDelay={0.35}
+              settledImmediately={true}
+              autoStart={false}
+              duration={1.8}
+              initialDelay={0.0}
               interactiveParallax={true}
               aspectRatioFit="contain"
               verticalAlign="bottom"
