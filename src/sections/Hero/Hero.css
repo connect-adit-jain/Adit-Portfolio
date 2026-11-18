@@ -9,8 +9,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-top: calc(4.5rem + clamp(1rem, 3vw, 2.5rem));
-  padding-bottom: clamp(2rem, 4vw, 3.5rem);
+  padding-top: calc(4.2rem + clamp(0.5rem, 1.5vw, 1.25rem));
+  padding-bottom: clamp(1rem, 2.5vw, 2.5rem);
   position: relative;
   border-bottom: 1px solid var(--color-sand-border);
   background-color: var(--color-charcoal);
@@ -21,7 +21,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: calc(100vh - 7.5rem);
+  min-height: calc(100vh - 6.5rem);
   position: relative;
   z-index: 1;
 }
@@ -78,8 +78,8 @@
 /* Halftone Portrait Stage */
 .hero-portrait-stage {
   width: 100%;
-  max-width: 620px;
-  height: clamp(380px, 48vh, 540px);
+  max-width: 580px;
+  height: clamp(320px, 44vh, 500px);
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -105,6 +105,17 @@
   text-align: center;
   z-index: 2;
   pointer-events: none;
+}
+
+.hero-name-badge {
+  font-family: var(--font-heading);
+  font-size: clamp(0.75rem, 1.1vw, 0.95rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--color-sand-muted);
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+  opacity: 0; /* GSAP animates in */
 }
 
 .hero-portfolio-title {

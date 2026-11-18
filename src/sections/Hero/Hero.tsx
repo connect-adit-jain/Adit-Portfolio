@@ -28,6 +28,12 @@ export const Hero: React.FC<HeroProps> = () => {
         { opacity: 1, y: 0, duration: 0.6 }
       )
         .fromTo(
+          '.hero-name-badge',
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.5 },
+          '-=0.3'
+        )
+        .fromTo(
           '.hero-portfolio-title',
           { opacity: 0, y: 35, scale: 0.96 },
           { opacity: 1, y: 0, scale: 1, duration: 0.85, ease: 'power4.out' },
@@ -71,7 +77,7 @@ export const Hero: React.FC<HeroProps> = () => {
           <span className="cgpa-tag">CGPA: {profileData.cgpa}</span>
         </div>
 
-        {/* Centerpiece: Halftone Portrait with Overlapping "PORTFOLIO" Title (Reel Reference) */}
+        {/* Centerpiece: Halftone Portrait with Overlapping "PORTFOLIO" Title */}
         <div className="hero-center-stage">
           {/* Halftone Portrait: Settled with interactive mouse parallax on loaded page */}
           <div className="hero-portrait-stage">
@@ -89,8 +95,9 @@ export const Hero: React.FC<HeroProps> = () => {
 
           {/* Overlapping Hero Title: "PORTFOLIO" across lower chest */}
           <div className="hero-title-overlay">
+            <span className="hero-name-badge">ADIT JAIN</span>
             <h1 className="hero-portfolio-title">PORTFOLIO</h1>
-            <p className="hero-portfolio-sub">Software Engineer &amp; Applied AI Developer</p>
+            <p className="hero-portfolio-sub">Software Engineering Student | Full-Stack &amp; AI Developer</p>
           </div>
         </div>
 
@@ -103,12 +110,12 @@ export const Hero: React.FC<HeroProps> = () => {
             </p>
 
             <div className="hero-cta-group">
-              <a href="#projects" className="hero-btn-primary">
-                <span>View Projects</span>
+              <a href="#projects" className="hero-btn-primary" data-cursor="project">
+                <span>Explore Work</span>
                 <ArrowDown size={16} aria-hidden="true" />
               </a>
               <a href="#contact" className="hero-btn-secondary">
-                <span>Initiate Contact</span>
+                <span>Resume / CV</span>
                 <ArrowUpRight size={16} aria-hidden="true" />
               </a>
             </div>

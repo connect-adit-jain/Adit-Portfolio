@@ -98,6 +98,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
   const textRef = useRef<HTMLHeadingElement>(null);
   const orbRef = useRef<HTMLDivElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
+  const finalMetaRef = useRef<HTMLDivElement>(null);
   const skipBtnRef = useRef<HTMLButtonElement>(null);
   const scramblerRef = useRef<TextScramble | null>(null);
 
@@ -123,7 +124,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         },
       });
 
-      tl.to([portraitWrapRef.current, textRef.current, subRef.current, skipBtnRef.current], {
+      tl.to([portraitWrapRef.current, textRef.current, subRef.current, finalMetaRef.current, skipBtnRef.current], {
         opacity: 0,
         y: -35,
         duration: 0.45,
@@ -221,11 +222,19 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           { y: 25, duration: 0.6, ease: 'power2.out' },
           '<'
         )
-        // Step 6: Hold the assembled particle portrait for a satisfying moment (5.8s – 7.2s)
-        // Step 7: Curtain exit upward to load the next page (7.2s+)
+        // Step 6: Complete Portrait & Final Composition (5.8s – 7.2s)
+        // Reveal live HTML metadata: ADIT JAIN and SOFTWARE ENGINEERING STUDENT | FULL-STACK & AI DEVELOPER
+        .fromTo(
+          finalMetaRef.current,
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+          '+=1.4'
+        )
+        // Hold the assembled particle portrait for a satisfying cinematic moment
+        // Step 7: Curtain exit upward to load the next page (7.5s+)
         .call(() => {
           finishPreloader();
-        }, undefined, '+=3.2');
+        }, undefined, '+=2.0');
     }, containerRef);
 
     return () => {
@@ -291,10 +300,18 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
             <span className="scramble-char">!</span>
           </h1>
 
-          {/* Subtitle that appears with name */}
+          {/* Subtitle that appears during Name Reveal stage */}
           <p ref={subRef} className="preloader-sub-tag">
-            Software Engineer &amp; Robotics Enthusiast
+            Software Engineering Student | Full-Stack &amp; AI Developer
           </p>
+
+          {/* Final Composition live HTML metadata that appears once portrait is assembled */}
+          <div ref={finalMetaRef} className="preloader-final-meta">
+            <span className="final-meta-name">ADIT JAIN</span>
+            <span className="final-meta-role">
+              Software Engineering Student | Full-Stack &amp; AI Developer
+            </span>
+          </div>
         </div>
       </div>
 

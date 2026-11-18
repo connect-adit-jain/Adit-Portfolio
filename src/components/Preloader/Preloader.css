@@ -183,6 +183,34 @@
   opacity: 0;
 }
 
+/* Final Composition Meta (Stage 6) */
+.preloader-final-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  opacity: 0;
+}
+
+.final-meta-name {
+  font-family: var(--font-heading);
+  font-size: clamp(0.9rem, 1.3vw, 1.2rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--color-sand-highlight);
+  text-transform: uppercase;
+}
+
+.final-meta-role {
+  font-family: var(--font-body);
+  font-size: clamp(0.72rem, 1vw, 0.88rem);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--color-sand);
+  text-transform: uppercase;
+}
+
 /* Subtle background halftone grid texture */
 .preloader-bg-stipple {
   position: absolute;

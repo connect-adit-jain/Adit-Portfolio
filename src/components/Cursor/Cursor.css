@@ -4,45 +4,102 @@
   top: 0;
   left: 0;
   pointer-events: none;
-  z-index: var(--z-cursor);
+  z-index: var(--z-cursor, 9999);
   border-radius: 50%;
   opacity: 0;
-  transition: opacity 0.2s ease, width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
   will-change: transform;
 }
 
+/* Tiny Sand central dot */
 .custom-cursor-dot {
-  width: 6px;
-  height: 6px;
-  margin-top: -3px;
-  margin-left: -3px;
-  background-color: var(--color-sand);
+  width: 5px;
+  height: 5px;
+  margin-top: -2.5px;
+  margin-left: -2.5px;
+  background-color: var(--color-sand, #D8CBB3);
+  box-shadow: 0 0 6px rgba(216, 203, 179, 0.4);
+  transition: opacity 0.2s ease, transform 0.15s ease, background-color 0.2s ease;
 }
 
+.custom-cursor-dot.visible {
+  opacity: 1;
+}
+
+.custom-cursor-dot.clicking {
+  transform: scale(0.7) !important;
+}
+
+/* Fine circular orbit outline */
 .custom-cursor-ring {
   width: 32px;
   height: 32px;
   margin-top: -16px;
   margin-left: -16px;
-  border: 1px solid rgba(216, 203, 179, 0.45);
-  transition: transform 0.08s linear, width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+  border: 1px solid rgba(216, 203, 179, 0.38);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease, width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    margin 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.25s ease, background-color 0.25s ease;
 }
 
-.custom-cursor-dot.visible,
 .custom-cursor-ring.visible {
   opacity: 1;
 }
 
-.custom-cursor-ring.hovered {
-  width: 52px;
-  height: 52px;
-  margin-top: -26px;
-  margin-left: -26px;
-  border-color: var(--color-sand);
-  background-color: rgba(216, 203, 179, 0.08);
+/* Button Hover State - subtle circle contraction */
+.custom-cursor-ring.mode-button {
+  width: 22px;
+  height: 22px;
+  margin-top: -11px;
+  margin-left: -11px;
+  border-color: rgba(216, 203, 179, 0.85);
+  background-color: rgba(216, 203, 179, 0.06);
 }
 
-@media (pointer: coarse) {
+/* Project Hover State - circle expands + small VIEW ↗ label */
+.custom-cursor-ring.mode-project {
+  width: 72px;
+  height: 72px;
+  margin-top: -36px;
+  margin-left: -36px;
+  border-color: rgba(216, 203, 179, 0.85);
+  background-color: rgba(30, 30, 28, 0.75);
+  backdrop-filter: blur(4px);
+}
+
+.cursor-project-label {
+  display: none;
+  font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-sand, #D8CBB3);
+  user-select: none;
+  pointer-events: none;
+}
+
+.custom-cursor-ring.mode-project .cursor-project-label {
+  display: block;
+}
+
+/* Click state - subtle ripple feedback */
+.custom-cursor-ring.clicking {
+  border-color: var(--color-sand, #D8CBB3);
+  transform: scale(0.92);
+}
+
+/* Touch and mobile suppression */
+@media (pointer: coarse), (max-width: 768px) {
+  .custom-cursor-dot,
+  .custom-cursor-ring {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
   .custom-cursor-dot,
   .custom-cursor-ring {
     display: none !important;

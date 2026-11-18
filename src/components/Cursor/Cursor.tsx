@@ -2,11 +2,14 @@ import React, { useEffect, useState, useRef } from 'react';
 import { isReducedMotion } from '../../animations/animationPresets';
 import './Cursor.css';
 
+type CursorMode = 'default' | 'button' | 'project';
+
 export const Cursor: React.FC = () => {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const [cursorMode, setCursorMode] = useState<CursorMode>('default');
   const [isVisible, setIsVisible] = useState(false);
+  const [isClicking, setIsClicking] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined' || isReducedMotion() || window.innerWidth <= 768) {
@@ -38,9 +41,17 @@ export const Cursor: React.FC = () => {
       setIsVisible(true);
     };
 
+    const handleMouseDown = () => {
+      setIsClicking(true);
+    };
+
+    const handleMouseUp = () => {
+      setIsClicking(false);
+    };
+
     let animationFrameId: number;
     const render = () => {
-      // Smooth linear interpolation for ring
+      // Smooth linear interpolation for the orbit ring (lerp)
       ringX += (mouseX - ringX) * 0.18;
       ringY += (mouseY - ringY) * 0.18;
 
@@ -48,31 +59,43 @@ export const Cursor: React.FC = () => {
       animationFrameId = requestAnimationFrame(render);
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mouseup', handleMouseUp);
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
     animationFrameId = requestAnimationFrame(render);
 
-    // Interactive element hover detection
+    // Contextual hover detection: project vs button vs normal
     const handleElementOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
-        target.tagName === 'A' ||
-        target.tagName === 'BUTTON' ||
-        target.closest('a') ||
-        target.closest('button') ||
-        target.getAttribute('role') === 'button'
-      ) {
-        setIsHovered(true);
-      } else {
-        setIsHovered(false);
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+
+      const projectTarget = target.closest(
+        '.project-card, .project-editorial-card, .dossier-route-card, [data-cursor="project"], .project-item'
+      );
+      if (projectTarget) {
+        setCursorMode('project');
+        return;
       }
+
+      const buttonTarget = target.closest(
+        'button, a, [role="button"], input[type="submit"], .hero-btn-primary, .hero-btn-secondary'
+      );
+      if (buttonTarget) {
+        setCursorMode('button');
+        return;
+      }
+
+      setCursorMode('default');
     };
 
-    window.addEventListener('mouseover', handleElementOver);
+    window.addEventListener('mouseover', handleElementOver, { passive: true });
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
       window.removeEventListener('mouseover', handleElementOver);
@@ -82,16 +105,23 @@ export const Cursor: React.FC = () => {
 
   return (
     <>
+      {/* Central Sand Dot */}
       <div
         ref={dotRef}
-        className={`custom-cursor-dot ${isVisible ? 'visible' : ''}`}
+        className={`custom-cursor-dot ${isVisible ? 'visible' : ''} ${isClicking ? 'clicking' : ''}`}
         aria-hidden="true"
       />
+
+      {/* Orbit Ring with Project View & Button Contraction */}
       <div
         ref={ringRef}
-        className={`custom-cursor-ring ${isVisible ? 'visible' : ''} ${isHovered ? 'hovered' : ''}`}
+        className={`custom-cursor-ring ${isVisible ? 'visible' : ''} mode-${cursorMode} ${
+          isClicking ? 'clicking' : ''
+        }`}
         aria-hidden="true"
-      />
+      >
+        <span className="cursor-project-label">VIEW ↗</span>
+      </div>
     </>
   );
 };
