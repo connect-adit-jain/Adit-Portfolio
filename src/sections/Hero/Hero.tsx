@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { gsap } from '../../animations/gsap';
 import { isReducedMotion } from '../../animations/animationPresets';
+import { runAlphabeticalMorph, CHAR_WIDTHS } from '../../animations/alphabeticalMorph';
 import { HeroParticlePortrait } from './HeroParticlePortrait';
 import './Hero.css';
 
@@ -8,8 +9,13 @@ interface HeroProps {
   portraitSettled?: boolean;
 }
 
+const HEADING_WORD = 'ADIT JAIN';
+const TAG_WORD = 'PORTFOLIO';
+
 export const Hero: React.FC<HeroProps> = ({ portraitSettled }) => {
   const heroRef = useRef<HTMLElement>(null);
+  const headingSlotRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const tagSlotRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Determine if preloader is active; if not present, start immediately
   const [shouldAnimate, setShouldAnimate] = useState(() => {
@@ -17,7 +23,7 @@ export const Hero: React.FC<HeroProps> = ({ portraitSettled }) => {
     return !document.querySelector('.cinematic-preloader');
   });
 
-  // Controls when the particle portrait dots start assembling (AFTER the text arrives)
+  // Controls when the particle portrait dots start assembling (AFTER the text morphs arrive)
   const [particlesReady, setParticlesReady] = useState(false);
 
   useEffect(() => {
@@ -39,7 +45,7 @@ export const Hero: React.FC<HeroProps> = ({ portraitSettled }) => {
     };
   }, []);
 
-  // Title entrance animation when hero reveals, followed by particle assembly
+  // Title entrance morph animation when hero reveals, followed by particle assembly
   useEffect(() => {
     if (!shouldAnimate || !heroRef.current) return;
 
@@ -54,27 +60,51 @@ export const Hero: React.FC<HeroProps> = ({ portraitSettled }) => {
     }
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        defaults: { ease: 'power3.out' },
+      // 1. Reveal title container smoothly
+      gsap.fromTo(
+        '.hero-title-lockup',
+        { opacity: 0, y: 35 },
+        { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out', delay: 0.1 }
+      );
+
+      const headingSlots = headingSlotRefs.current
+        .filter((el): el is HTMLDivElement => el !== null)
+        .map(cell => ({
+          cell,
+          inner: (cell.querySelector('.slot-inner') || cell) as HTMLElement,
+        }));
+
+      const tagSlots = tagSlotRefs.current
+        .filter((el): el is HTMLDivElement => el !== null)
+        .map(cell => ({
+          cell,
+          inner: (cell.querySelector('.slot-inner') || cell) as HTMLElement,
+        }));
+
+      // 1. Heading morphs onto hero section (morphing from PORTFOLIO -> ADIT JAIN)
+      runAlphabeticalMorph({
+        slots: headingSlots,
+        fromText: 'PORTFOLIO',
+        toText: 'ADIT JAIN',
+        duration: 1.15,
+        delay: 0.15,
+        stagger: 0.035,
+      });
+
+      // 2. Tag morphs onto hero section at bottom-left (morphing into PORTFOLIO)
+      runAlphabeticalMorph({
+        slots: tagSlots,
+        fromText: 'ADIT JAIN',
+        toText: 'PORTFOLIO',
+        duration: 1.0,
+        delay: 0.35,
+        stagger: 0.03,
         onComplete: () => {
-          // AFTER these texts come, THEN the image should come as dots and assemble within 2 seconds
+          // Both texts have fully morphed and settled!
+          // Now trigger particle portrait assembly within 2 seconds
           setParticlesReady(true);
         },
       });
-
-      // 1. "ADIT JAIN" arrives at the bottom of the hero section
-      tl.fromTo(
-        '.hero-name-heading',
-        { opacity: 0, y: 45, scale: 0.96 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.8, delay: 0.1 }
-      )
-        // 2. THEN "PORTFOLIO" in small text at bottom left comes in
-        .fromTo(
-          '.hero-portfolio-tag',
-          { opacity: 0, x: -18 },
-          { opacity: 1, x: 0, duration: 0.55, ease: 'power2.out' },
-          '-=0.25'
-        );
     }, heroRef);
 
     return () => ctx.revert();
@@ -90,11 +120,33 @@ export const Hero: React.FC<HeroProps> = ({ portraitSettled }) => {
         />
       </div>
 
-      {/* ── Overlaid "ADIT JAIN" & "PORTFOLIO" Typography ── */}
+      {/* ── Overlaid "ADIT JAIN" & "PORTFOLIO" Typography with Morph Effect ── */}
       <div className="hero-title-layer" aria-hidden="false">
         <div className="hero-title-lockup">
-          <h1 className="hero-name-heading">ADIT JAIN</h1>
-          <span className="hero-portfolio-tag">PORTFOLIO</span>
+          <h1 className="hero-name-heading" aria-label="Adit Jain">
+            {HEADING_WORD.split('').map((char, i) => (
+              <div
+                key={i}
+                ref={el => { headingSlotRefs.current[i] = el; }}
+                className="hero-slot"
+                style={{ width: CHAR_WIDTHS[char] || '0.6em' }}
+              >
+                <span className="slot-inner">{char === ' ' ? '\u00A0' : char}</span>
+              </div>
+            ))}
+          </h1>
+          <span className="hero-portfolio-tag" aria-label="Portfolio">
+            {TAG_WORD.split('').map((char, i) => (
+              <div
+                key={i}
+                ref={el => { tagSlotRefs.current[i] = el; }}
+                className="hero-tag-slot"
+                style={{ width: CHAR_WIDTHS[char] || '0.6em' }}
+              >
+                <span className="slot-inner">{char === ' ' ? '\u00A0' : char}</span>
+              </div>
+            ))}
+          </span>
         </div>
       </div>
     </section>
