@@ -81,9 +81,12 @@
 }
 
 /* ==========================================
-   CENTER REEL STAGE: Two-Page Cinematic Flow
-   Page 1: "I" with dot -> swings left ("AD") -> swings right ("T JAIN") -> "ADIT JAIN"
-   Page 2: "PORTFOLIO" in huge text
+   CENTER REEL STAGE: Unified Kinetic Morph
+   1. "I" with dot drops down in spotlight
+   2. "I" tilts left -> "AD" appears with tilt
+   3. "I" tilts right -> "T JAIN" appears with tilt
+   4. "I" snaps to center -> dot disappears, perfectly aligned "ADIT JAIN"
+   5. Letters smoothly roll/morph to form "PORTFOLIO"
    ========================================== */
 .preloader-center-stage {
   flex: 1;
@@ -104,119 +107,118 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: clamp(280px, 45vw, 620px);
-  height: clamp(280px, 45vw, 620px);
+  width: clamp(320px, 48vw, 680px);
+  height: clamp(320px, 48vw, 680px);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(216, 203, 179, 0.14) 0%, rgba(216, 203, 179, 0.04) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(216, 203, 179, 0.14) 0%, rgba(216, 203, 179, 0.03) 45%, transparent 70%);
   pointer-events: none;
   z-index: 1;
 }
 
-/* Page Containers */
-.preloader-page {
+/* Unified Typography Stage */
+.preloader-stage {
   position: relative;
   z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  will-change: transform, opacity;
-}
-
-.preloader-page-name {
-  margin-top: -2vh;
-}
-
-/* Page 1: Assembled Name Lockup: "AD" + ("I" + dot) + "T JAIN" */
-.preloader-name-assembly {
   display: flex;
   align-items: baseline;
   justify-content: center;
-  position: relative;
   font-family: var(--font-heading, 'Space Grotesk', sans-serif);
-  font-size: clamp(3.2rem, 11vw, 8.5rem);
+  font-size: clamp(3.2rem, 10.5vw, 8.5rem);
   font-weight: 700;
   line-height: 1;
-  letter-spacing: 0.02em;
   color: var(--color-sand);
   text-transform: uppercase;
   user-select: none;
+  letter-spacing: 0.03em;
+  margin-top: -2vh;
 }
 
-.assembly-part {
-  display: inline-block;
+/* Group 1: AD */
+.group-ad {
+  display: inline-flex;
+  align-items: baseline;
   will-change: transform, opacity;
-  color: #D8CBB3;
 }
 
-.assembly-left {
-  /* "AD" */
-  margin-right: clamp(6px, 1.2vw, 14px);
-}
-
-/* The "I" with dot unit (Image 1, 2, 3) */
-.assembly-i-unit {
+/* Group 2: Unit "I" with dot */
+.unit-i {
+  position: relative;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  position: relative;
-  margin: 0 clamp(4px, 0.8vw, 10px);
   will-change: transform, opacity;
+  line-height: 1;
+  vertical-align: baseline;
 }
 
-.assembly-i-bar {
-  display: block;
-  width: clamp(14px, 2.2vw, 26px);
-  height: clamp(48px, 8vw, 86px);
-  background: #D8CBB3;
-  border-radius: 3px;
-  transform-origin: 50% 100%; /* Pivots at bottom right above the dot! */
-  will-change: transform;
-  box-shadow: 0 0 24px rgba(216, 203, 179, 0.5);
+.i-glyph-box {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  height: 1.15em;
+  line-height: 1.15em;
+  width: 0.28em;
+  text-align: center;
+  perspective: 400px;
+  transform-origin: 50% 100%;
+  will-change: transform, width;
 }
 
-.assembly-i-dot {
-  display: block;
-  width: clamp(16px, 2.4vw, 26px);
-  height: clamp(16px, 2.4vw, 26px);
+.i-dot {
+  position: absolute;
+  bottom: -0.22em;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0.16em;
+  height: 0.16em;
   border-radius: 50%;
   background: #D8CBB3;
-  margin-top: clamp(6px, 1vw, 12px);
-  box-shadow: 0 0 24px rgba(216, 203, 179, 0.6);
+  box-shadow: 0 0 18px rgba(216, 203, 179, 0.6);
   will-change: transform, opacity;
 }
 
-.assembly-right {
-  /* "T JAIN" */
-  margin-left: clamp(6px, 1.2vw, 14px);
+/* Group 3: T JAIN */
+.group-tjain {
+  display: inline-flex;
+  align-items: baseline;
+  will-change: transform, opacity;
 }
 
-/* Page 2: "then PORTFOLIO in next page" (Image 4) */
-.preloader-page-portfolio {
-  position: absolute;
-  inset: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
+/* Individual Morph Slots */
+.slot {
+  position: relative;
+  display: inline-block;
+  height: 1.15em;
+  line-height: 1.15em;
+  overflow: hidden;
+  perspective: 400px;
+  text-align: center;
 }
 
-.preloader-huge-portfolio {
-  font-family: var(--font-heading, 'Space Grotesk', sans-serif);
-  font-size: clamp(3.5rem, 13vw, 11rem);
-  font-weight: 700;
-  letter-spacing: 0.04em;
+/* Dynamic slot widths tuned to Space Grotesk letter proportions */
+.slot-w-a { width: 0.65em; }
+.slot-w-d { width: 0.68em; }
+.slot-w-t { width: 0.55em; }
+.space-slot { width: 0.38em; will-change: width; }
+.slot-w-j { width: 0.52em; will-change: width; }
+.slot-w-a2 { width: 0.65em; }
+.slot-w-i2 { width: 0.28em; }
+.slot-w-n { width: 0.68em; }
+
+.char-top, .char-bot {
+  display: block;
+  line-height: 1.15em;
+  will-change: transform, opacity;
   color: #D8CBB3;
-  text-transform: uppercase;
-  margin: 0;
-  text-shadow:
-    0 4px 40px rgba(30, 30, 28, 0.9),
-    0 2px 14px rgba(30, 30, 28, 0.7);
-  line-height: 0.9;
-  z-index: 2;
-  will-change: transform, opacity;
+}
+
+.char-bot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
 }
 
 /* Subtle background halftone grid texture */

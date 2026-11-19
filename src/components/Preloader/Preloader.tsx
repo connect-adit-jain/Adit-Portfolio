@@ -10,14 +10,12 @@ interface PreloaderProps {
 
 export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const page1Ref = useRef<HTMLDivElement>(null);
-  const page2Ref = useRef<HTMLDivElement>(null);
-  const adRef = useRef<HTMLSpanElement>(null);
-  const pivotRef = useRef<HTMLDivElement>(null);
-  const barRef = useRef<HTMLSpanElement>(null);
-  const dotRef = useRef<HTMLSpanElement>(null);
-  const tjainRef = useRef<HTMLSpanElement>(null);
-  const portfolioTextRef = useRef<HTMLHeadingElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const groupAdRef = useRef<HTMLDivElement>(null);
+  const unitIRef = useRef<HTMLDivElement>(null);
+  const iBoxRef = useRef<HTMLDivElement>(null);
+  const iDotRef = useRef<HTMLSpanElement>(null);
+  const groupTjainRef = useRef<HTMLDivElement>(null);
   const skipBtnRef = useRef<HTMLButtonElement>(null);
 
   const [isSkipped, setIsSkipped] = useState(false);
@@ -44,7 +42,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         },
       });
 
-      tl.to([page1Ref.current, page2Ref.current, skipBtnRef.current], {
+      tl.to([stageRef.current, skipBtnRef.current], {
         opacity: 0,
         y: -30,
         duration: 0.4,
@@ -87,23 +85,34 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
       const masterTl = gsap.timeline();
 
       // Initial state
-      gsap.set(page1Ref.current, { opacity: 1 });
-      gsap.set(page2Ref.current, { opacity: 0, display: 'none' });
-      gsap.set(adRef.current, { opacity: 0, x: -35 });
-      gsap.set(tjainRef.current, { opacity: 0, x: 35 });
-      gsap.set(pivotRef.current, {
+      gsap.set(groupAdRef.current, {
+        opacity: 0,
+        x: -35,
+        rotation: -12,
+        transformOrigin: 'bottom right',
+      });
+      gsap.set(groupTjainRef.current, {
+        opacity: 0,
+        x: 35,
+        rotation: 10,
+        transformOrigin: 'bottom left',
+      });
+      gsap.set(unitIRef.current, {
         y: -280,
         opacity: 0,
         scale: 0.9,
       });
-      gsap.set(barRef.current, {
+      gsap.set(iBoxRef.current, {
         rotation: 0,
         transformOrigin: '50% 100%',
+        width: '0.28em',
       });
+      gsap.set(iDotRef.current, { opacity: 1, scale: 1 });
+      gsap.set('.char-bot', { yPercent: 105, rotateX: -90, opacity: 0 });
 
       // ── STAGE 1: "first 'I' should come with a dot" (Image 1) ──
       masterTl
-        .to(pivotRef.current, {
+        .to(unitIRef.current, {
           y: 0,
           opacity: 1,
           scale: 1,
@@ -111,100 +120,144 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           ease: 'bounce.out',
           delay: 0.25,
         })
-        // ── STAGE 2: "I" bar tilts left -> "AD" appears (Image 2) ──
+        // ── STAGE 2: "I" tilts left, "AD" appears tilting into place (Image 2) ──
         .to(
-          barRef.current,
+          iBoxRef.current,
           {
-            rotation: -44,
+            rotation: -38,
             duration: 0.52,
             ease: 'power2.out',
           },
-          '+=0.25'
+          '+=0.2'
         )
         .to(
-          adRef.current,
+          groupAdRef.current,
           {
             opacity: 1,
             x: 0,
-            duration: 0.45,
-            ease: 'power2.out',
-          },
-          '-=0.38'
-        )
-        // ── STAGE 3: "I" bar tilts right -> "T JAIN" appears (Image 3) ──
-        .to(
-          barRef.current,
-          {
-            rotation: 40,
-            duration: 0.58,
-            ease: 'power1.inOut',
-          },
-          '+=0.15'
-        )
-        .to(
-          tjainRef.current,
-          {
-            opacity: 1,
-            x: 0,
+            rotation: 0,
             duration: 0.5,
             ease: 'power2.out',
           },
-          '-=0.45'
+          '-=0.36'
         )
-        // ── STAGE 4: "I" snaps back to vertical center -> "ADIT JAIN" assembled ──
-        .to(barRef.current, {
+        // ── STAGE 3: "I" tilts right, "T JAIN" appears tilting into place (Image 3) ──
+        .to(
+          iBoxRef.current,
+          {
+            rotation: 36,
+            duration: 0.55,
+            ease: 'power1.inOut',
+          },
+          '+=0.12'
+        )
+        .to(
+          groupTjainRef.current,
+          {
+            opacity: 1,
+            x: 0,
+            rotation: 0,
+            duration: 0.5,
+            ease: 'power2.out',
+          },
+          '-=0.42'
+        )
+        // ── STAGE 4: "I" snaps to center, dot is removed, "ADIT JAIN" fully aligned ──
+        .to(iBoxRef.current, {
           rotation: 0,
           duration: 0.65,
           ease: 'elastic.out(1, 0.45)',
         })
         .to(
-          [adRef.current, pivotRef.current, tjainRef.current],
+          iDotRef.current,
+          {
+            opacity: 0,
+            scale: 0,
+            duration: 0.28,
+            ease: 'power2.out',
+          },
+          '-=0.42'
+        )
+        // Ambient glow across perfectly aligned "ADIT JAIN"
+        .to(
+          stageRef.current,
           {
             textShadow:
               '0 0 35px rgba(216, 203, 179, 0.55), 0 0 15px rgba(216, 203, 179, 0.3)',
-            duration: 0.4,
+            duration: 0.35,
             ease: 'power2.out',
           },
           '-=0.2'
         )
-        // ── STAGE 5: "then PORTFOLIO in next page" (Image 4) ──
-        // Fade out Page 1
+        // ── STAGE 5: Letters smoothly change / morph into "PORTFOLIO" ──
         .to(
-          page1Ref.current,
+          '.char-top',
           {
+            yPercent: -105,
+            rotateX: 90,
             opacity: 0,
-            scale: 0.95,
-            duration: 0.45,
-            ease: 'power2.in',
+            duration: 0.65,
+            ease: 'power2.inOut',
+            stagger: 0.04,
           },
-          '+=0.75'
+          '+=0.8'
         )
-        // Activate and reveal Page 2 (huge PORTFOLIO)
-        .set(page2Ref.current, { display: 'flex' })
-        .fromTo(
-          page2Ref.current,
-          { opacity: 0 },
-          { opacity: 1, duration: 0.3 }
-        )
-        .fromTo(
-          portfolioTextRef.current,
-          { opacity: 0, scale: 0.92, y: 25 },
+        .to(
+          '.char-bot',
           {
+            yPercent: 0,
+            rotateX: 0,
             opacity: 1,
-            scale: 1,
-            y: 0,
-            duration: 0.75,
-            ease: 'power3.out',
+            duration: 0.65,
+            ease: 'power2.inOut',
+            stagger: 0.04,
           },
-          '-=0.15'
+          '-=0.6'
         )
-        // Hold on PORTFOLIO (~1.0s), then curtain exit to hero!
+        // Expand widths for the incoming PORTFOLIO characters (R, F, and O in slot 6)
+        .to(
+          iBoxRef.current,
+          {
+            width: '0.66em',
+            duration: 0.45,
+            ease: 'power2.out',
+          },
+          '-=0.52'
+        )
+        .to(
+          '.space-slot',
+          {
+            width: '0.58em',
+            duration: 0.45,
+            ease: 'power2.out',
+          },
+          '-=0.45'
+        )
+        .to(
+          '.slot-w-j',
+          {
+            width: '0.68em',
+            duration: 0.45,
+            ease: 'power2.out',
+          },
+          '-=0.45'
+        )
+        .to(
+          stageRef.current,
+          {
+            textShadow:
+              '0 0 40px rgba(216, 203, 179, 0.65), 0 4px 30px rgba(30, 30, 28, 0.9)',
+            duration: 0.4,
+          },
+          '-=0.2'
+        )
+        // Hold on PORTFOLIO (~1.1s), then curtain exit to hero!
         .call(
           () => {
             finishPreloader();
           },
           undefined,
-          '+=1.0'
+          '+=1.1'
         );
     }, containerRef);
 
@@ -242,39 +295,61 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         </button>
       </div>
 
-      {/* Center Reel Stage: Page 1 (AD + I with dot + T JAIN) & Page 2 (PORTFOLIO) */}
+      {/* Center Reel Stage: Morphing Typography */}
       <div className="preloader-center-stage">
-        {/* Soft Radial Spotlight Halo */}
+        {/* Soft Radial Spotlight Halo (Image 1) */}
         <div className="preloader-spotlight" aria-hidden="true" />
 
-        {/* ── Page 1: "I" with dot -> AD -> T JAIN -> ADIT JAIN ── */}
-        <div ref={page1Ref} className="preloader-page preloader-page-name">
-          <div className="preloader-name-assembly" aria-label="Adit Jain">
-            <span ref={adRef} className="assembly-part assembly-left">
-              AD
-            </span>
-
-            {/* Middle: "I" bar + circular dot (Image 1, 2, 3) */}
-            <div ref={pivotRef} className="assembly-i-unit">
-              <span ref={barRef} className="assembly-i-bar" />
-              <span ref={dotRef} className="assembly-i-dot" />
+        {/* Unified 9-character Stage: ADIT JAIN -> PORTFOLIO */}
+        <div ref={stageRef} className="preloader-stage" aria-label="Adit Jain Portfolio">
+          {/* Group 1: AD */}
+          <div ref={groupAdRef} className="group-ad">
+            <div className="slot slot-w-a">
+              <span className="char-top">A</span>
+              <span className="char-bot">P</span>
             </div>
-
-            <span ref={tjainRef} className="assembly-part assembly-right">
-              T&nbsp;JAIN
-            </span>
+            <div className="slot slot-w-d">
+              <span className="char-top">D</span>
+              <span className="char-bot">O</span>
+            </div>
           </div>
-        </div>
 
-        {/* ── Page 2: "then PORTFOLIO in next page" (Image 4) ── */}
-        <div
-          ref={page2Ref}
-          className="preloader-page preloader-page-portfolio"
-          aria-label="Portfolio"
-        >
-          <h1 ref={portfolioTextRef} className="preloader-huge-portfolio">
-            PORTFOLIO
-          </h1>
+          {/* Group 2: "I" with dot (exact same size as other letters, dot disappears on assemble) */}
+          <div ref={unitIRef} className="unit-i">
+            <div ref={iBoxRef} className="i-glyph-box">
+              <span className="char-top">I</span>
+              <span className="char-bot">R</span>
+            </div>
+            <span ref={iDotRef} className="i-dot" aria-hidden="true" />
+          </div>
+
+          {/* Group 3: T JAIN */}
+          <div ref={groupTjainRef} className="group-tjain">
+            <div className="slot slot-w-t">
+              <span className="char-top">T</span>
+              <span className="char-bot">T</span>
+            </div>
+            <div className="slot space-slot">
+              <span className="char-top">&nbsp;</span>
+              <span className="char-bot">F</span>
+            </div>
+            <div className="slot slot-w-j">
+              <span className="char-top">J</span>
+              <span className="char-bot">O</span>
+            </div>
+            <div className="slot slot-w-a2">
+              <span className="char-top">A</span>
+              <span className="char-bot">L</span>
+            </div>
+            <div className="slot slot-w-i2">
+              <span className="char-top">I</span>
+              <span className="char-bot">I</span>
+            </div>
+            <div className="slot slot-w-n">
+              <span className="char-top">N</span>
+              <span className="char-bot">O</span>
+            </div>
+          </div>
         </div>
       </div>
 
