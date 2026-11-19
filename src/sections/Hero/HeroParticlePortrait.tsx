@@ -165,7 +165,7 @@ export const HeroParticlePortrait: React.FC<HeroParticlePortraitProps> = ({
 
     assemblyTlRef.current = gsap.to(assemblyRef.current, {
       value: 1,
-      duration: 1.3,
+      duration: 2.0,
       ease: 'power2.out',
       onUpdate: () => {
         needsRenderRef.current = true;

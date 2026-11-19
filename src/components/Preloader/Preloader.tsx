@@ -10,11 +10,14 @@ interface PreloaderProps {
 
 export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const stageRef = useRef<HTMLDivElement>(null);
+  const page1Ref = useRef<HTMLDivElement>(null);
+  const page2Ref = useRef<HTMLDivElement>(null);
   const adRef = useRef<HTMLSpanElement>(null);
-  const pivotRef = useRef<HTMLSpanElement>(null);
+  const pivotRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLSpanElement>(null);
+  const dotRef = useRef<HTMLSpanElement>(null);
   const tjainRef = useRef<HTMLSpanElement>(null);
-  const portfolioRef = useRef<HTMLDivElement>(null);
+  const portfolioTextRef = useRef<HTMLHeadingElement>(null);
   const skipBtnRef = useRef<HTMLButtonElement>(null);
 
   const [isSkipped, setIsSkipped] = useState(false);
@@ -41,7 +44,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         },
       });
 
-      tl.to([stageRef.current, skipBtnRef.current], {
+      tl.to([page1Ref.current, page2Ref.current, skipBtnRef.current], {
         opacity: 0,
         y: -30,
         duration: 0.4,
@@ -83,42 +86,41 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
     const ctx = gsap.context(() => {
       const masterTl = gsap.timeline();
 
-      // Initial state: hide parts, position "i" high above
+      // Initial state
+      gsap.set(page1Ref.current, { opacity: 1 });
+      gsap.set(page2Ref.current, { opacity: 0, display: 'none' });
       gsap.set(adRef.current, { opacity: 0, x: -35 });
       gsap.set(tjainRef.current, { opacity: 0, x: 35 });
-      gsap.set(portfolioRef.current, { opacity: 0, y: 22 });
       gsap.set(pivotRef.current, {
-        y: -300,
+        y: -280,
         opacity: 0,
-        scale: 0.85,
-        transformOrigin: '50% 0%',
+        scale: 0.9,
+      });
+      gsap.set(barRef.current, {
+        rotation: 0,
+        transformOrigin: '50% 100%',
       });
 
-      // Stage 1: "i" drops from up to down (0.2s – 0.95s)
+      // ── STAGE 1: "first 'I' should come with a dot" (Image 1) ──
       masterTl
+        .to(pivotRef.current, {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.75,
+          ease: 'bounce.out',
+          delay: 0.25,
+        })
+        // ── STAGE 2: "I" bar tilts left -> "AD" appears (Image 2) ──
         .to(
-          pivotRef.current,
+          barRef.current,
           {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 0.75,
-            ease: 'bounce.out',
-            delay: 0.25,
-          }
-        )
-        // Stage 2: "i" swings left (0.95s – 1.45s)
-        .to(
-          pivotRef.current,
-          {
-            rotation: -28,
-            x: -24,
-            duration: 0.5,
+            rotation: -44,
+            duration: 0.52,
             ease: 'power2.out',
           },
-          '+=0.1'
+          '+=0.25'
         )
-        // As it swings left, "AD" appears on the left
         .to(
           adRef.current,
           {
@@ -127,20 +129,18 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
             duration: 0.45,
             ease: 'power2.out',
           },
-          '-=0.35'
+          '-=0.38'
         )
-        // Stage 3: "i" swings right (1.5s – 2.1s)
+        // ── STAGE 3: "I" bar tilts right -> "T JAIN" appears (Image 3) ──
         .to(
-          pivotRef.current,
+          barRef.current,
           {
-            rotation: 26,
-            x: 20,
+            rotation: 40,
             duration: 0.58,
             ease: 'power1.inOut',
           },
-          '+=0.05'
+          '+=0.15'
         )
-        // As it swings right, "T JAIN" appears on the right
         .to(
           tjainRef.current,
           {
@@ -151,47 +151,60 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           },
           '-=0.45'
         )
-        // Stage 4: "i" swings back to center and settles into place (2.15s – 2.8s)
-        .to(
-          pivotRef.current,
-          {
-            rotation: 0,
-            x: 0,
-            duration: 0.65,
-            ease: 'elastic.out(1, 0.4)',
-          }
-        )
-        // Subtle glow across the fully assembled "ADIT JAIN"
+        // ── STAGE 4: "I" snaps back to vertical center -> "ADIT JAIN" assembled ──
+        .to(barRef.current, {
+          rotation: 0,
+          duration: 0.65,
+          ease: 'elastic.out(1, 0.45)',
+        })
         .to(
           [adRef.current, pivotRef.current, tjainRef.current],
           {
-            textShadow: '0 0 35px rgba(216, 203, 179, 0.55), 0 0 15px rgba(216, 203, 179, 0.3)',
+            textShadow:
+              '0 0 35px rgba(216, 203, 179, 0.55), 0 0 15px rgba(216, 203, 179, 0.3)',
             duration: 0.4,
             ease: 'power2.out',
           },
           '-=0.2'
         )
-        // Stage 5: After "ADIT JAIN", "PORTFOLIO" text comes in!
+        // ── STAGE 5: "then PORTFOLIO in next page" (Image 4) ──
+        // Fade out Page 1
+        .to(
+          page1Ref.current,
+          {
+            opacity: 0,
+            scale: 0.95,
+            duration: 0.45,
+            ease: 'power2.in',
+          },
+          '+=0.75'
+        )
+        // Activate and reveal Page 2 (huge PORTFOLIO)
+        .set(page2Ref.current, { display: 'flex' })
         .fromTo(
-          portfolioRef.current,
-          { opacity: 0, y: 22, letterSpacing: '0.28em' },
+          page2Ref.current,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.3 }
+        )
+        .fromTo(
+          portfolioTextRef.current,
+          { opacity: 0, scale: 0.92, y: 25 },
           {
             opacity: 1,
+            scale: 1,
             y: 0,
-            letterSpacing: '0.14em',
             duration: 0.75,
             ease: 'power3.out',
           },
-          '+=0.3'
+          '-=0.15'
         )
-        // Stage 6: Hold so the full composition is visible (~1.1s)
-        // Stage 7: Transition to hero section
+        // Hold on PORTFOLIO (~1.0s), then curtain exit to hero!
         .call(
           () => {
             finishPreloader();
           },
           undefined,
-          '+=1.1'
+          '+=1.0'
         );
     }, containerRef);
 
@@ -229,26 +242,39 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         </button>
       </div>
 
-      {/* Center Kinetic Stage: "i" Drops -> Swings Left ("AD") -> Swings Right ("T JAIN") -> "ADIT JAIN" -> "PORTFOLIO" */}
+      {/* Center Reel Stage: Page 1 (AD + I with dot + T JAIN) & Page 2 (PORTFOLIO) */}
       <div className="preloader-center-stage">
-        <div ref={stageRef} className="preloader-kinetic-stage">
-          {/* Assembled Name Lockup */}
+        {/* Soft Radial Spotlight Halo */}
+        <div className="preloader-spotlight" aria-hidden="true" />
+
+        {/* ── Page 1: "I" with dot -> AD -> T JAIN -> ADIT JAIN ── */}
+        <div ref={page1Ref} className="preloader-page preloader-page-name">
           <div className="preloader-name-assembly" aria-label="Adit Jain">
             <span ref={adRef} className="assembly-part assembly-left">
               AD
             </span>
-            <span ref={pivotRef} className="assembly-i-pivot">
-              <span className="assembly-i-letter">I</span>
-            </span>
+
+            {/* Middle: "I" bar + circular dot (Image 1, 2, 3) */}
+            <div ref={pivotRef} className="assembly-i-unit">
+              <span ref={barRef} className="assembly-i-bar" />
+              <span ref={dotRef} className="assembly-i-dot" />
+            </div>
+
             <span ref={tjainRef} className="assembly-part assembly-right">
               T&nbsp;JAIN
             </span>
           </div>
+        </div>
 
-          {/* PORTFOLIO reveal following ADIT JAIN */}
-          <div ref={portfolioRef} className="preloader-portfolio-wrap" aria-label="Portfolio">
-            <span className="preloader-portfolio-text">PORTFOLIO</span>
-          </div>
+        {/* ── Page 2: "then PORTFOLIO in next page" (Image 4) ── */}
+        <div
+          ref={page2Ref}
+          className="preloader-page preloader-page-portfolio"
+          aria-label="Portfolio"
+        >
+          <h1 ref={portfolioTextRef} className="preloader-huge-portfolio">
+            PORTFOLIO
+          </h1>
         </div>
       </div>
 

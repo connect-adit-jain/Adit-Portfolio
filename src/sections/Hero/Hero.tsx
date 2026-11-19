@@ -17,6 +17,9 @@ export const Hero: React.FC<HeroProps> = ({ portraitSettled }) => {
     return !document.querySelector('.cinematic-preloader');
   });
 
+  // Controls when the particle portrait dots start assembling (AFTER the text arrives)
+  const [particlesReady, setParticlesReady] = useState(false);
+
   useEffect(() => {
     if (portraitSettled) {
       setShouldAnimate(true);
@@ -36,7 +39,7 @@ export const Hero: React.FC<HeroProps> = ({ portraitSettled }) => {
     };
   }, []);
 
-  // Title entrance animation when hero reveals
+  // Title entrance animation when hero reveals, followed by particle assembly
   useEffect(() => {
     if (!shouldAnimate || !heroRef.current) return;
 
@@ -46,24 +49,31 @@ export const Hero: React.FC<HeroProps> = ({ portraitSettled }) => {
         y: 0,
         x: 0,
       });
+      setParticlesReady(true);
       return;
     }
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      const tl = gsap.timeline({
+        defaults: { ease: 'power3.out' },
+        onComplete: () => {
+          // AFTER these texts come, THEN the image should come as dots and assemble within 2 seconds
+          setParticlesReady(true);
+        },
+      });
 
       // 1. "ADIT JAIN" arrives at the bottom of the hero section
       tl.fromTo(
         '.hero-name-heading',
         { opacity: 0, y: 45, scale: 0.96 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.85, delay: 0.15 }
+        { opacity: 1, y: 0, scale: 1, duration: 0.8, delay: 0.1 }
       )
         // 2. THEN "PORTFOLIO" in small text at bottom left comes in
         .fromTo(
           '.hero-portfolio-tag',
           { opacity: 0, x: -18 },
-          { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' },
-          '-=0.35'
+          { opacity: 1, x: 0, duration: 0.55, ease: 'power2.out' },
+          '-=0.25'
         );
     }, heroRef);
 
@@ -76,7 +86,7 @@ export const Hero: React.FC<HeroProps> = ({ portraitSettled }) => {
       <div className="hero-portrait-frame">
         <HeroParticlePortrait
           className="hero-particle-stage"
-          startAssembly={shouldAnimate}
+          startAssembly={particlesReady}
         />
       </div>
 
