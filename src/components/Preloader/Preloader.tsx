@@ -11,7 +11,9 @@ interface PreloaderProps {
 
 export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const titleLockupRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  const tagRef = useRef<HTMLSpanElement>(null);
   const groupAdRef = useRef<HTMLDivElement>(null);
   const unitIRef = useRef<HTMLDivElement>(null);
   const iBoxRef = useRef<HTMLDivElement>(null);
@@ -23,44 +25,16 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
   const [isSkipped, setIsSkipped] = useState(false);
   const isCompletedRef = useRef(false);
 
-  // Complete preloader and trigger curtain exit
+  // Complete preloader and handover to Hero
   const finishPreloader = useCallback(() => {
     if (isCompletedRef.current) return;
     isCompletedRef.current = true;
 
-    // Dispatch event to let Hero know curtain exit is happening
-    window.dispatchEvent(new Event('start-hero-reveal'));
+    // Dispatch events to let Hero know the text has arrived and settled
+    window.dispatchEvent(new Event('hero-text-settled'));
+    window.dispatchEvent(new Event('preloader-complete'));
 
-    if (isReducedMotion()) {
-      onComplete();
-      return;
-    }
-
-    // Curtain exit animation upward into the loaded Hero page
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        onComplete: () => {
-          onComplete();
-        },
-      });
-
-      tl.to([stageRef.current, skipBtnRef.current], {
-        opacity: 0,
-        y: -30,
-        duration: 0.4,
-        ease: 'power2.in',
-      }).to(
-        containerRef.current,
-        {
-          yPercent: -100,
-          duration: 0.75,
-          ease: 'power4.inOut',
-        },
-        '-=0.1'
-      );
-    }, containerRef);
-
-    return () => ctx.revert();
+    onComplete();
   }, [onComplete]);
 
   // Handle Skip Intro
@@ -176,6 +150,9 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
             scale: 0,
             duration: 0.28,
             ease: 'power2.out',
+            onComplete: () => {
+              if (iDotRef.current) iDotRef.current.style.display = 'none';
+            },
           },
           '-=0.42'
         )
@@ -195,9 +172,65 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
               duration: 1.15,
               stagger: 0.035,
               onComplete: () => {
-                // Hold on PORTFOLIO (~1.0s), then curtain exit to hero!
-                gsap.delayedCall(1.0, () => {
-                  finishPreloader();
+                // Pause on PORTFOLIO (~0.7s)
+                gsap.delayedCall(0.7, () => {
+                  // ── STAGE 6: Seamless Transition: The preloader text moves to hero section with morph! ──
+                  // 1. Fade out preloader dark backdrop and surrounding UI, revealing hero canvas underneath
+                  gsap.to(
+                    [
+                      '.preloader-spotlight',
+                      '.preloader-bg-stipple',
+                      '.preloader-top-bar',
+                      containerRef.current,
+                    ],
+                    {
+                      opacity: 0,
+                      duration: 0.85,
+                      ease: 'power2.out',
+                    }
+                  );
+
+                  // 2. Measure exact target coordinates of the hero title lockup
+                  let targetY = window.innerHeight * 0.35;
+                  let targetX = 0;
+                  const heroLockup = document.querySelector('.hero-title-lockup');
+                  if (heroLockup && titleLockupRef.current) {
+                    const heroRect = heroLockup.getBoundingClientRect();
+                    const preloaderRect = titleLockupRef.current.getBoundingClientRect();
+                    if (heroRect.top > 0) {
+                      targetY = heroRect.top - preloaderRect.top;
+                      targetX = heroRect.left - preloaderRect.left;
+                    }
+                  }
+
+                  // The preloader text glides smoothly from center to exact bottom hero position
+                  gsap.to(titleLockupRef.current, {
+                    x: targetX,
+                    y: targetY,
+                    duration: 1.35,
+                    ease: 'power3.inOut',
+                  });
+
+                  // 3. As it moves down, it morphs from PORTFOLIO back to ADIT JAIN
+                  runAlphabeticalMorph({
+                    slots: morphSlots,
+                    fromText: 'PORTFOLIO',
+                    toText: 'ADIT JAIN',
+                    duration: 1.15,
+                    delay: 0.1,
+                    stagger: 0.035,
+                  });
+
+                  // 4. The small PORTFOLIO tag appears at bottom-left of ADIT JAIN
+                  gsap.to(tagRef.current, {
+                    opacity: 1,
+                    duration: 0.5,
+                    delay: 0.85,
+                    ease: 'power2.out',
+                    onComplete: () => {
+                      finishPreloader();
+                    },
+                  });
                 });
               },
             });
@@ -246,77 +279,83 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         {/* Soft Radial Spotlight Halo (Image 1) */}
         <div className="preloader-spotlight" aria-hidden="true" />
 
-        {/* Unified 9-character Stage: ADIT JAIN -> PORTFOLIO */}
-        <div ref={stageRef} className="preloader-stage" aria-label="Adit Jain Portfolio">
-          {/* Group 1: AD */}
-          <div ref={groupAdRef} className="group-ad">
-            <div
-              ref={el => { slotRefs.current[0] = el; }}
-              className="slot slot-w-a"
-            >
-              <span className="slot-inner">A</span>
+        <div ref={titleLockupRef} className="preloader-title-lockup">
+          {/* Unified 9-character Stage: ADIT JAIN -> PORTFOLIO -> ADIT JAIN */}
+          <div ref={stageRef} className="preloader-stage" aria-label="Adit Jain Portfolio">
+            {/* Group 1: AD */}
+            <div ref={groupAdRef} className="group-ad">
+              <div
+                ref={el => { slotRefs.current[0] = el; }}
+                className="slot slot-w-a"
+              >
+                <span className="slot-inner">A</span>
+              </div>
+              <div
+                ref={el => { slotRefs.current[1] = el; }}
+                className="slot slot-w-d"
+              >
+                <span className="slot-inner">D</span>
+              </div>
             </div>
-            <div
-              ref={el => { slotRefs.current[1] = el; }}
-              className="slot slot-w-d"
-            >
-              <span className="slot-inner">D</span>
+
+            {/* Group 2: Unit "I" with dot */}
+            <div ref={unitIRef} className="unit-i">
+              <div
+                ref={el => {
+                  iBoxRef.current = el;
+                  slotRefs.current[2] = el;
+                }}
+                className="i-glyph-box slot-w-i"
+              >
+                <span className="slot-inner">I</span>
+              </div>
+              <span ref={iDotRef} className="i-dot" aria-hidden="true" />
+            </div>
+
+            {/* Group 3: T JAIN */}
+            <div ref={groupTjainRef} className="group-tjain">
+              <div
+                ref={el => { slotRefs.current[3] = el; }}
+                className="slot slot-w-t"
+              >
+                <span className="slot-inner">T</span>
+              </div>
+              <div
+                ref={el => { slotRefs.current[4] = el; }}
+                className="slot space-slot"
+              >
+                <span className="slot-inner">&nbsp;</span>
+              </div>
+              <div
+                ref={el => { slotRefs.current[5] = el; }}
+                className="slot slot-w-j"
+              >
+                <span className="slot-inner">J</span>
+              </div>
+              <div
+                ref={el => { slotRefs.current[6] = el; }}
+                className="slot slot-w-a2"
+              >
+                <span className="slot-inner">A</span>
+              </div>
+              <div
+                ref={el => { slotRefs.current[7] = el; }}
+                className="slot slot-w-i2"
+              >
+                <span className="slot-inner">I</span>
+              </div>
+              <div
+                ref={el => { slotRefs.current[8] = el; }}
+                className="slot slot-w-n"
+              >
+                <span className="slot-inner">N</span>
+              </div>
             </div>
           </div>
 
-          {/* Group 2: Unit "I" with dot */}
-          <div ref={unitIRef} className="unit-i">
-            <div
-              ref={el => {
-                iBoxRef.current = el;
-                slotRefs.current[2] = el;
-              }}
-              className="i-glyph-box slot-w-i"
-            >
-              <span className="slot-inner">I</span>
-            </div>
-            <span ref={iDotRef} className="i-dot" aria-hidden="true" />
-          </div>
-
-          {/* Group 3: T JAIN */}
-          <div ref={groupTjainRef} className="group-tjain">
-            <div
-              ref={el => { slotRefs.current[3] = el; }}
-              className="slot slot-w-t"
-            >
-              <span className="slot-inner">T</span>
-            </div>
-            <div
-              ref={el => { slotRefs.current[4] = el; }}
-              className="slot space-slot"
-            >
-              <span className="slot-inner">&nbsp;</span>
-            </div>
-            <div
-              ref={el => { slotRefs.current[5] = el; }}
-              className="slot slot-w-j"
-            >
-              <span className="slot-inner">J</span>
-            </div>
-            <div
-              ref={el => { slotRefs.current[6] = el; }}
-              className="slot slot-w-a2"
-            >
-              <span className="slot-inner">A</span>
-            </div>
-            <div
-              ref={el => { slotRefs.current[7] = el; }}
-              className="slot slot-w-i2"
-            >
-              <span className="slot-inner">I</span>
-            </div>
-            <div
-              ref={el => { slotRefs.current[8] = el; }}
-              className="slot slot-w-n"
-            >
-              <span className="slot-inner">N</span>
-            </div>
-          </div>
+          <span ref={tagRef} className="preloader-portfolio-tag" aria-label="Portfolio">
+            PORTFOLIO
+          </span>
         </div>
       </div>
 

@@ -115,6 +115,17 @@
   z-index: 1;
 }
 
+/* Lockup holding both heading and bottom-left tag */
+.preloader-title-lockup {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: -2vh;
+  will-change: transform;
+}
+
 /* Unified Typography Stage */
 .preloader-stage {
   position: relative;
@@ -123,14 +134,27 @@
   align-items: baseline;
   justify-content: center;
   font-family: var(--font-heading, 'Space Grotesk', sans-serif);
-  font-size: clamp(3.2rem, 10.5vw, 8.5rem);
+  font-size: clamp(3.2rem, 11vw, 10.5rem);
   font-weight: 700;
-  line-height: 1;
-  color: var(--color-sand);
+  line-height: 0.88;
+  color: #FFFFFF;
   text-transform: uppercase;
   user-select: none;
   letter-spacing: 0.03em;
-  margin-top: -2vh;
+}
+
+.preloader-portfolio-tag {
+  font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+  font-size: clamp(0.75rem, 1.4vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: #8BA9C4; /* distinctive muted electric blue */
+  text-transform: uppercase;
+  margin-top: clamp(0.45rem, 1vw, 0.9rem);
+  margin-left: 0.2rem;
+  opacity: 0;
+  display: inline-block;
+  will-change: transform, opacity;
 }
 
 /* Group 1: AD */
@@ -231,6 +255,44 @@
   pointer-events: none;
   opacity: 0.5;
   z-index: 1;
+}
+
+/* ==========================================
+   RESPONSIVE (Matches Hero Section Breakpoints Exactly)
+   ========================================== */
+@media (max-width: 900px) {
+  .preloader-stage {
+    font-size: clamp(2.8rem, 12vw, 6.2rem);
+  }
+
+  .preloader-portfolio-tag {
+    font-size: clamp(0.7rem, 1.3vw, 1rem);
+    letter-spacing: 0.26em;
+  }
+}
+
+@media (max-width: 600px) {
+  .preloader-stage {
+    font-size: clamp(2.3rem, 13vw, 4.2rem);
+    letter-spacing: 0.02em;
+  }
+
+  .preloader-portfolio-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    margin-top: 0.4rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .preloader-stage {
+    font-size: 2.1rem;
+  }
+
+  .preloader-portfolio-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+  }
 }
 
 /* ==========================================

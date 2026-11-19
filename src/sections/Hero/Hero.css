@@ -96,11 +96,8 @@
   color: #FFFFFF;
   text-transform: uppercase;
   margin: 0;
-  text-shadow:
-    0 4px 40px rgba(0, 0, 0, 0.95),
-    0 2px 12px rgba(0, 0, 0, 0.7);
   mix-blend-mode: normal;
-  opacity: 0.98;
+  opacity: 1;
   will-change: transform, opacity;
   white-space: nowrap;
   display: flex;
