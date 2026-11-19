@@ -1,28 +1,28 @@
 :root {
   /* ========================================================
-     APPROVED PALETTE: CHARCOAL & SAND ONLY (LOCKED)
-     Charcoal: #1E1E1C
-     Sand: #D8CBB3
+     APPROVED PALETTE: BLACK & WHITE
+     Black: #000000
+     White: #FFFFFF
      ======================================================== */
-  --color-charcoal: #1E1E1C;
-  --color-charcoal-deep: #161614;
-  --color-charcoal-surface: #242421;
-  --color-charcoal-border: #32322E;
-  --color-charcoal-subtle: #40403B;
+  --color-charcoal: #000000;
+  --color-charcoal-deep: #000000;
+  --color-charcoal-surface: #0D0D0D;
+  --color-charcoal-border: #1E1E1E;
+  --color-charcoal-subtle: #2A2A2A;
 
-  --color-sand: #D8CBB3;
-  --color-sand-muted: #B8AA91;
-  --color-sand-dim: rgba(216, 203, 179, 0.65);
-  --color-sand-faint: rgba(216, 203, 179, 0.12);
-  --color-sand-border: rgba(216, 203, 179, 0.22);
-  --color-sand-highlight: #EDE5D5;
+  --color-sand: #FFFFFF;
+  --color-sand-muted: #D8D8D8;
+  --color-sand-dim: rgba(255, 255, 255, 0.70);
+  --color-sand-faint: rgba(255, 255, 255, 0.12);
+  --color-sand-border: rgba(255, 255, 255, 0.22);
+  --color-sand-highlight: #FFFFFF;
 
-  /* Status Colors adhering to monochrome/sand contrast */
-  --status-production: #D8CBB3;
-  --status-completed: #C2B49B;
-  --status-prototype: #A6987E;
-  --status-research: #94876F;
-  --status-pending: #847963;
+  /* Status Colors adhering to monochrome contrast */
+  --status-production: #FFFFFF;
+  --status-completed: #E0E0E0;
+  --status-prototype: #B8B8B8;
+  --status-research: #9E9E9E;
+  --status-pending: #808080;
 
   /* Typography */
   --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -61,7 +61,7 @@
 
   /* Elevation & Borders */
   --border-editorial: 1px solid var(--color-sand-border);
-  --border-editorial-subtle: 1px solid rgba(216, 203, 179, 0.12);
+  --border-editorial-subtle: 1px solid rgba(255, 255, 255, 0.12);
   --border-editorial-bold: 2px solid var(--color-sand);
 
   /* Z-indices */

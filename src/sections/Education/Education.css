@@ -49,7 +49,7 @@
 .edu-status-pill.completed {
   background-color: transparent;
   color: var(--color-sand-muted);
-  border: 1px solid rgba(216, 203, 179, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .edu-time {
@@ -83,7 +83,7 @@
 .edu-metric-box {
   margin-top: auto;
   padding-top: var(--space-md);
-  border-top: 1px solid rgba(216, 203, 179, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

@@ -55,8 +55,8 @@ export const HeroParticlePortrait: React.FC<HeroParticlePortraitProps> = ({
     const assembly = assemblyRef.current.value;
     const dissolve = dissolveRef.current.value;
 
-    // Clear to charcoal
-    ctx.fillStyle = '#1E1E1C';
+    // Clear to black
+    ctx.fillStyle = '#000000';
     ctx.fillRect(0, 0, w, h);
 
     // Subject bounding box in original 1024×682 image
@@ -87,8 +87,8 @@ export const HeroParticlePortrait: React.FC<HeroParticlePortraitProps> = ({
       ctx.globalAlpha = 1;
     }
 
-    // Particle rendering
-    const sandR = 216, sandG = 203, sandB = 179;
+    // Particle rendering (White dots)
+    const sandR = 255, sandG = 255, sandB = 255;
     const isMob = w < 768 * 2; // canvas width is DPR-scaled
     const baseRadius = isMob ? 1.2 : 1.6;
 

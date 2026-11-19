@@ -13,13 +13,13 @@
   grid-template-columns: 120px 1fr 200px;
   gap: clamp(1.5rem, 3vw, 3rem);
   padding: clamp(1.5rem, 3vw, 2.5rem) 0;
-  border-bottom: 1px solid rgba(216, 203, 179, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   align-items: start;
   transition: background-color var(--transition-fast);
 }
 
 .achievement-row:hover {
-  background-color: rgba(216, 203, 179, 0.02);
+  background-color: rgba(255, 255, 255, 0.02);
 }
 
 /* Index Col */
@@ -108,7 +108,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-sand);
-  border: 1px solid rgba(216, 203, 179, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 0.3rem 0.75rem;
   background-color: var(--color-charcoal-deep);
 }

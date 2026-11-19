@@ -10,14 +10,14 @@
   will-change: transform;
 }
 
-/* Tiny Sand central dot */
+/* Tiny White central dot */
 .custom-cursor-dot {
   width: 5px;
   height: 5px;
   margin-top: -2.5px;
   margin-left: -2.5px;
-  background-color: var(--color-sand, #D8CBB3);
-  box-shadow: 0 0 6px rgba(216, 203, 179, 0.4);
+  background-color: var(--color-sand, #FFFFFF);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
   transition: opacity 0.2s ease, transform 0.15s ease, background-color 0.2s ease;
 }
 
@@ -35,7 +35,7 @@
   height: 32px;
   margin-top: -16px;
   margin-left: -16px;
-  border: 1px solid rgba(216, 203, 179, 0.38);
+  border: 1px solid rgba(255, 255, 255, 0.38);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -55,8 +55,8 @@
   height: 22px;
   margin-top: -11px;
   margin-left: -11px;
-  border-color: rgba(216, 203, 179, 0.85);
-  background-color: rgba(216, 203, 179, 0.06);
+  border-color: rgba(255, 255, 255, 0.85);
+  background-color: rgba(255, 255, 255, 0.06);
 }
 
 /* Project Hover State - circle expands + small VIEW ↗ label */
@@ -65,8 +65,8 @@
   height: 72px;
   margin-top: -36px;
   margin-left: -36px;
-  border-color: rgba(216, 203, 179, 0.85);
-  background-color: rgba(30, 30, 28, 0.75);
+  border-color: rgba(255, 255, 255, 0.85);
+  background-color: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(4px);
 }
 
@@ -76,7 +76,7 @@
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: var(--color-sand, #D8CBB3);
+  color: var(--color-sand, #FFFFFF);
   user-select: none;
   pointer-events: none;
 }
@@ -87,7 +87,7 @@
 
 /* Click state - subtle ripple feedback */
 .custom-cursor-ring.clicking {
-  border-color: var(--color-sand, #D8CBB3);
+  border-color: var(--color-sand, #FFFFFF);
   transform: scale(0.92);
 }
 

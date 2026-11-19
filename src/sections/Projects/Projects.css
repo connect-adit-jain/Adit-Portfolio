@@ -15,7 +15,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  border-bottom: 1px solid rgba(216, 203, 179, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   padding-bottom: 0.5rem;
 }
 
@@ -34,7 +34,7 @@
 
 .filter-btn:hover {
   color: var(--color-sand-highlight);
-  background-color: rgba(216, 203, 179, 0.05);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .filter-btn.active {
@@ -75,7 +75,7 @@
   justify-content: space-between;
   margin-bottom: var(--space-md);
   padding-bottom: var(--space-sm);
-  border-bottom: 1px solid rgba(216, 203, 179, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .card-index {
@@ -135,7 +135,7 @@
 .card-contribution-box,
 .card-recognition-box {
   padding: 0.6rem 0;
-  border-top: 1px solid rgba(216, 203, 179, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .box-label {
@@ -161,7 +161,7 @@
 .card-footer {
   margin-top: var(--space-md);
   padding-top: var(--space-md);
-  border-top: 1px solid rgba(216, 203, 179, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
@@ -177,9 +177,9 @@
   font-family: var(--font-mono);
   font-size: 0.7rem;
   color: var(--color-sand-muted);
-  background-color: rgba(216, 203, 179, 0.05);
+  background-color: rgba(255, 255, 255, 0.05);
   padding: 0.2rem 0.5rem;
-  border: 1px solid rgba(216, 203, 179, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .card-action-wrap {

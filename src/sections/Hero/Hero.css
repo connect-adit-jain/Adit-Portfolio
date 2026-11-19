@@ -1,6 +1,6 @@
 /* ==========================================================================
    HERO SECTION — Full-Viewport Cinematic Particle Portrait
-   Charcoal #1E1E1C | Sand #D8CBB3 | Name Accent #8BA9C4
+   Black #000000 | White #FFFFFF | Name Accent #8BA9C4
    ========================================================================== */
 
 .hero-section {
@@ -9,7 +9,7 @@
   height: 100svh;
   height: 100vh; /* fallback */
   min-height: 500px;
-  background-color: #1E1E1C;
+  background-color: #000000;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -93,12 +93,12 @@
   font-weight: 700;
   letter-spacing: 0.03em;
   line-height: 0.88;
-  color: #D8CBB3;
+  color: #FFFFFF;
   text-transform: uppercase;
   margin: 0;
   text-shadow:
-    0 4px 40px rgba(30, 30, 28, 0.9),
-    0 2px 12px rgba(30, 30, 28, 0.7);
+    0 4px 40px rgba(0, 0, 0, 0.95),
+    0 2px 12px rgba(0, 0, 0, 0.7);
   mix-blend-mode: normal;
   opacity: 0.95;
   will-change: transform, opacity;
@@ -117,7 +117,7 @@
   opacity: 0;
   display: inline-block;
   will-change: transform, opacity;
-  text-shadow: 0 2px 12px rgba(30, 30, 28, 0.8);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
 }
 
 /* ──────────────────────────────────────────

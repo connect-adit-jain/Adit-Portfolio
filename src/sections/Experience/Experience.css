@@ -28,7 +28,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
-  border-right: 1px solid rgba(216, 203, 179, 0.12);
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
   padding-right: var(--space-md);
 }
 
@@ -115,7 +115,7 @@
   text-transform: uppercase;
   color: var(--color-sand-muted);
   padding: 0.25rem 0.65rem;
-  border: 1px solid rgba(216, 203, 179, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   background-color: var(--color-charcoal);
   white-space: nowrap;
 }
@@ -129,7 +129,7 @@
 .exp-deliverables-box {
   margin-top: var(--space-xs);
   padding: var(--space-sm) 0;
-  border-top: 1px solid rgba(216, 203, 179, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .deliverables-title {
@@ -169,15 +169,15 @@
   gap: 0.35rem;
   margin-top: var(--space-xs);
   padding-top: var(--space-sm);
-  border-top: 1px solid rgba(216, 203, 179, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .exp-skill-tag {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   color: var(--color-sand-muted);
-  background-color: rgba(216, 203, 179, 0.05);
-  border: 1px solid rgba(216, 203, 179, 0.12);
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   padding: 0.2rem 0.55rem;
 }
 
@@ -189,7 +189,7 @@
 
   .exp-meta-col {
     border-right: none;
-    border-bottom: 1px solid rgba(216, 203, 179, 0.12);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     padding-right: 0;
     padding-bottom: var(--space-sm);
   }

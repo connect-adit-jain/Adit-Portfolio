@@ -22,13 +22,13 @@
   line-height: 1.6;
   font-weight: 500;
   padding-bottom: var(--space-md);
-  border-bottom: 1px solid rgba(216, 203, 179, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .narrative-lead strong {
   color: var(--color-sand);
   text-decoration: underline;
-  text-decoration-color: rgba(216, 203, 179, 0.4);
+  text-decoration-color: rgba(255, 255, 255, 0.4);
   text-underline-offset: 4px;
 }
 
@@ -86,12 +86,12 @@
 .strand-card {
   padding: var(--space-md);
   background-color: var(--color-charcoal-deep);
-  border: 1px solid rgba(216, 203, 179, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   transition: all var(--transition-fast);
 }
 
 .strand-card:hover {
-  border-color: rgba(216, 203, 179, 0.35);
+  border-color: rgba(255, 255, 255, 0.35);
   transform: translateX(4px);
 }
 
@@ -133,7 +133,7 @@
   text-transform: uppercase;
   color: var(--color-sand-muted);
   padding: 0.15rem 0.5rem;
-  border: 1px solid rgba(216, 203, 179, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 @media (max-width: 960px) {

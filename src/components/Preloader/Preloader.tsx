@@ -183,7 +183,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           stageRef.current,
           {
             textShadow:
-              '0 0 35px rgba(216, 203, 179, 0.55), 0 0 15px rgba(216, 203, 179, 0.3)',
+              '0 0 35px rgba(255, 255, 255, 0.55), 0 0 15px rgba(255, 255, 255, 0.3)',
             duration: 0.35,
             ease: 'power2.out',
           },
@@ -246,7 +246,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           stageRef.current,
           {
             textShadow:
-              '0 0 40px rgba(216, 203, 179, 0.65), 0 4px 30px rgba(30, 30, 28, 0.9)',
+              '0 0 40px rgba(255, 255, 255, 0.65), 0 4px 30px rgba(0, 0, 0, 0.95)',
             duration: 0.4,
           },
           '-=0.2'

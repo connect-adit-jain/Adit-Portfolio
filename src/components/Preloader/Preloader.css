@@ -74,7 +74,7 @@
 .preloader-skip-btn .key-hint {
   display: inline-block;
   padding: 0.15rem 0.35rem;
-  border: 1px solid rgba(216, 203, 179, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   font-size: 0.6rem;
   line-height: 1;
   color: var(--color-sand-dim);
@@ -110,7 +110,7 @@
   width: clamp(320px, 48vw, 680px);
   height: clamp(320px, 48vw, 680px);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(216, 203, 179, 0.14) 0%, rgba(216, 203, 179, 0.03) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.03) 45%, transparent 70%);
   pointer-events: none;
   z-index: 1;
 }
@@ -172,8 +172,8 @@
   width: 0.16em;
   height: 0.16em;
   border-radius: 50%;
-  background: #D8CBB3;
-  box-shadow: 0 0 18px rgba(216, 203, 179, 0.6);
+  background: #FFFFFF;
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.6);
   will-change: transform, opacity;
 }
 
@@ -209,7 +209,7 @@
   display: block;
   line-height: 1.15em;
   will-change: transform, opacity;
-  color: #D8CBB3;
+  color: #FFFFFF;
 }
 
 .char-bot {
@@ -225,7 +225,7 @@
 .preloader-bg-stipple {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(216, 203, 179, 0.08) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
   background-size: 24px 24px;
   pointer-events: none;
   opacity: 0.5;

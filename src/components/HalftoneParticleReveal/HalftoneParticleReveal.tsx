@@ -76,8 +76,8 @@ export const HalftoneParticleReveal: React.FC<HalftoneParticleRevealProps> = ({
       onProgress(progress);
     }
 
-    // Charcoal background: #1E1E1C
-    ctx.fillStyle = '#1E1E1C';
+    // Black background: #000000
+    ctx.fillStyle = '#000000';
     ctx.fillRect(0, 0, width, height);
 
     // Subject bounding box in 1024x682:
@@ -127,9 +127,9 @@ export const HalftoneParticleReveal: React.FC<HalftoneParticleRevealProps> = ({
 
     if (totalPoints > 0 && (progress < 1 || !imgRef.current)) {
       const particleAlphaMult = progress > 0.75 ? Math.max(0, 1 - (progress - 0.75) / 0.25) : 1;
-      const sandR = 216;
-      const sandG = 203;
-      const sandB = 179;
+      const sandR = 255;
+      const sandG = 255;
+      const sandB = 255;
       // Distinct, prominent dots during the assembly phase
       const baseRadius = width < 768 ? 1.3 : 1.7;
 

@@ -96,7 +96,7 @@ export const Footer: React.FC = () => {
         <div className="footer-bottom-bar">
           <div className="footer-meta">
             <p className="copyright">
-              © {new Date().getFullYear()} {profileData.name}. Designed &amp; engineered with Charcoal (#1E1E1C) &amp; Sand (#D8CBB3).
+              © {new Date().getFullYear()} {profileData.name}. Designed &amp; engineered with Black (#000000) &amp; White (#FFFFFF).
             </p>
             <p className="veracity-notice">
               Strictly verified facts from resume and validated materials.
