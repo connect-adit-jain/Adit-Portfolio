@@ -81,7 +81,12 @@
 }
 
 /* ==========================================
-   CENTER REEL STAGE: Typography Focus
+   CENTER REEL STAGE: Kinetic Typography Assembly
+   1. "i" drops from up to down
+   2. "i" swings left -> "AD" appears
+   3. "i" swings right -> "T JAIN" appears
+   4. "i" settles -> "ADIT JAIN" fully assembled
+   5. "PORTFOLIO" text reveals below
    ========================================== */
 .preloader-center-stage {
   flex: 1;
@@ -96,72 +101,76 @@
   width: 100%;
 }
 
-/* Text Container */
-.preloader-text-area {
+.preloader-kinetic-stage {
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   z-index: 2;
-  margin-top: -3vh; /* visually centered taking top bar into account */
+  margin-top: -2vh;
 }
 
-/* Glowing Sand Spark / Orb */
-.preloader-spark-orb {
-  width: 14px;
-  height: 14px;
-  background-color: var(--color-sand);
-  border-radius: 50%;
-  box-shadow: 0 0 24px 8px rgba(216, 203, 179, 0.5), 0 0 48px 16px rgba(216, 203, 179, 0.25);
-  margin-bottom: var(--space-md);
-  opacity: 0;
-  animation: sparkPulse 1.8s infinite ease-in-out;
-}
-
-@keyframes sparkPulse {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 0 24px 8px rgba(216, 203, 179, 0.5), 0 0 48px 16px rgba(216, 203, 179, 0.25);
-  }
-  50% {
-    transform: scale(1.35);
-    box-shadow: 0 0 36px 12px rgba(216, 203, 179, 0.7), 0 0 64px 24px rgba(216, 203, 179, 0.35);
-  }
-}
-
-/* Morphing Title: "ADIT JAIN" -> "PORTFOLIO" */
-.preloader-morph-title {
-  font-family: var(--font-heading);
-  font-size: clamp(3.2rem, 10vw, 8rem);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: var(--color-sand-highlight);
-  line-height: 0.95;
-  margin: 0;
-  text-transform: uppercase;
-  min-height: 1.1em;
+/* Assembled Name Lockup: "AD" + "I" + "T JAIN" */
+.preloader-name-assembly {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: center;
-  text-shadow: 0 4px 28px rgba(30, 30, 28, 0.9);
-}
-
-/* Scramble Glyph (glitch characters during morph) */
-.scramble-char {
+  position: relative;
+  font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+  font-size: clamp(3.2rem, 11vw, 8.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.03em;
   color: var(--color-sand);
-  opacity: 0.65;
-  font-weight: 400;
+  text-transform: uppercase;
+  user-select: none;
 }
 
-/* Subtitle Tag */
-.preloader-sub-tag {
-  font-family: var(--font-body);
-  font-size: clamp(0.85rem, 1.2vw, 1.1rem);
-  letter-spacing: 0.08em;
-  color: var(--color-sand-muted);
+.assembly-part {
+  display: inline-block;
+  will-change: transform, opacity;
+  color: #D8CBB3;
+}
+
+.assembly-left {
+  /* "AD" */
+  margin-right: 0.03em;
+}
+
+.assembly-i-pivot {
+  display: inline-block;
+  transform-origin: 50% 0%;
+  will-change: transform, opacity;
+  position: relative;
+  z-index: 5;
+}
+
+.assembly-i-letter {
+  display: inline-block;
+  color: #8BA9C4; /* distinctive luminous accent */
+  text-shadow: 0 0 24px rgba(139, 169, 196, 0.6), 0 0 48px rgba(139, 169, 196, 0.3);
+}
+
+.assembly-right {
+  /* "T JAIN" */
+  margin-left: 0.03em;
+}
+
+/* PORTFOLIO reveal */
+.preloader-portfolio-wrap {
+  margin-top: clamp(1.2rem, 3vh, 2.4rem);
+  will-change: transform, opacity;
+}
+
+.preloader-portfolio-text {
+  font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+  font-size: clamp(1.2rem, 3.2vw, 2.4rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: #D8CBB3;
   text-transform: uppercase;
-  margin-top: var(--space-sm);
-  opacity: 0;
+  opacity: 0.9;
+  text-shadow: 0 4px 24px rgba(30, 30, 28, 0.9);
 }
 
 /* Subtle background halftone grid texture */

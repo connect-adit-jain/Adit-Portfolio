@@ -65,24 +65,33 @@
 }
 
 /* ──────────────────────────────────────────
-   "PORTFOLIO" TYPOGRAPHY OVERLAY
+   "ADIT JAIN" & "PORTFOLIO" TYPOGRAPHY OVERLAY
    ────────────────────────────────────────── */
 .hero-title-layer {
   position: absolute;
-  bottom: clamp(8%, 12vh, 18%);
+  bottom: clamp(6%, 10vh, 16%);
   left: 0;
   right: 0;
   z-index: 10;
   display: flex;
   justify-content: center;
   pointer-events: none;
+  padding: 0 var(--container-pad, clamp(1.25rem, 4vw, 3.5rem));
 }
 
-.hero-portfolio-heading {
+.hero-title-lockup {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start; /* Aligns PORTFOLIO to the bottom left of ADIT JAIN */
+  max-width: 95vw;
+}
+
+.hero-name-heading {
   font-family: var(--font-heading, 'Space Grotesk', sans-serif);
-  font-size: clamp(3.5rem, 12vw, 11rem);
+  font-size: clamp(3.2rem, 11vw, 10.5rem);
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   line-height: 0.88;
   color: #D8CBB3;
   text-transform: uppercase;
@@ -91,7 +100,24 @@
     0 4px 40px rgba(30, 30, 28, 0.9),
     0 2px 12px rgba(30, 30, 28, 0.7);
   mix-blend-mode: normal;
-  opacity: 0.92;
+  opacity: 0.95;
+  will-change: transform, opacity;
+  white-space: nowrap;
+}
+
+.hero-portfolio-tag {
+  font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+  font-size: clamp(0.75rem, 1.4vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: #8BA9C4; /* distinctive muted electric blue */
+  text-transform: uppercase;
+  margin-top: clamp(0.45rem, 1vw, 0.9rem);
+  margin-left: 0.2rem;
+  opacity: 0;
+  display: inline-block;
+  will-change: transform, opacity;
+  text-shadow: 0 2px 12px rgba(30, 30, 28, 0.8);
 }
 
 /* ──────────────────────────────────────────
@@ -100,31 +126,47 @@
 
 /* Tablet */
 @media (max-width: 900px) {
-  .hero-portfolio-heading {
-    font-size: clamp(3rem, 14vw, 6.5rem);
+  .hero-name-heading {
+    font-size: clamp(2.8rem, 12vw, 6.2rem);
+  }
+
+  .hero-portfolio-tag {
+    font-size: clamp(0.7rem, 1.3vw, 1rem);
+    letter-spacing: 0.26em;
   }
 
   .hero-title-layer {
-    bottom: clamp(6%, 10vh, 14%);
+    bottom: clamp(5%, 9vh, 13%);
   }
 }
 
 /* Mobile */
 @media (max-width: 600px) {
-  .hero-portfolio-heading {
-    font-size: clamp(2.5rem, 16vw, 4.5rem);
+  .hero-name-heading {
+    font-size: clamp(2.3rem, 13vw, 4.2rem);
     letter-spacing: 0.02em;
   }
 
+  .hero-portfolio-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    margin-top: 0.4rem;
+  }
+
   .hero-title-layer {
-    bottom: clamp(5%, 8vh, 12%);
+    bottom: clamp(4%, 7vh, 10%);
   }
 }
 
 /* Small Mobile */
 @media (max-width: 360px) {
-  .hero-portfolio-heading {
-    font-size: 2.4rem;
+  .hero-name-heading {
+    font-size: 2.1rem;
+  }
+
+  .hero-portfolio-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
   }
 }
 

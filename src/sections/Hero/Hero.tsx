@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { gsap } from '../../animations/gsap';
+import { isReducedMotion } from '../../animations/animationPresets';
 import { HeroParticlePortrait } from './HeroParticlePortrait';
 import './Hero.css';
 
@@ -7,6 +9,8 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ portraitSettled }) => {
+  const heroRef = useRef<HTMLElement>(null);
+
   // Determine if preloader is active; if not present, start immediately
   const [shouldAnimate, setShouldAnimate] = useState(() => {
     if (typeof document === 'undefined') return true;
@@ -32,8 +36,42 @@ export const Hero: React.FC<HeroProps> = ({ portraitSettled }) => {
     };
   }, []);
 
+  // Title entrance animation when hero reveals
+  useEffect(() => {
+    if (!shouldAnimate || !heroRef.current) return;
+
+    if (isReducedMotion()) {
+      gsap.set(['.hero-name-heading', '.hero-portfolio-tag'], {
+        opacity: 1,
+        y: 0,
+        x: 0,
+      });
+      return;
+    }
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+      // 1. "ADIT JAIN" arrives at the bottom of the hero section
+      tl.fromTo(
+        '.hero-name-heading',
+        { opacity: 0, y: 45, scale: 0.96 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.85, delay: 0.15 }
+      )
+        // 2. THEN "PORTFOLIO" in small text at bottom left comes in
+        .fromTo(
+          '.hero-portfolio-tag',
+          { opacity: 0, x: -18 },
+          { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' },
+          '-=0.35'
+        );
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, [shouldAnimate]);
+
   return (
-    <section id="hero" className="hero-section" aria-label="Introduction">
+    <section id="hero" ref={heroRef} className="hero-section" aria-label="Introduction">
       {/* ── Particle Portrait (dominant, full-viewport) ── */}
       <div className="hero-portrait-frame">
         <HeroParticlePortrait
@@ -42,9 +80,12 @@ export const Hero: React.FC<HeroProps> = ({ portraitSettled }) => {
         />
       </div>
 
-      {/* ── Overlaid "PORTFOLIO" Typography ── */}
+      {/* ── Overlaid "ADIT JAIN" & "PORTFOLIO" Typography ── */}
       <div className="hero-title-layer" aria-hidden="false">
-        <h1 className="hero-portfolio-heading">PORTFOLIO</h1>
+        <div className="hero-title-lockup">
+          <h1 className="hero-name-heading">ADIT JAIN</h1>
+          <span className="hero-portfolio-tag">PORTFOLIO</span>
+        </div>
       </div>
     </section>
   );

@@ -8,102 +8,14 @@ interface PreloaderProps {
   onComplete: () => void;
 }
 
-// Cinematic Character Scrambler with slow, deliberate letter-by-letter reveal
-const SCRAMBLE_CHARS = '!<>-_\\/[]{}—=+*^?#________ABCDEFGIJKLMNOPQRSTUVWXYZ0123456789';
-
-class TextScramble {
-  el: HTMLElement;
-  chars: string;
-  frame: number;
-  frameRequest: number | null;
-  queue: Array<{ from: string; to: string; start: number; end: number; char?: string }>;
-  resolve: (() => void) | null;
-
-  constructor(el: HTMLElement) {
-    this.el = el;
-    this.chars = SCRAMBLE_CHARS;
-    this.frame = 0;
-    this.frameRequest = null;
-    this.queue = [];
-    this.resolve = null;
-    this.update = this.update.bind(this);
-  }
-
-  setText(newText: string, speedMultiplier = 1): Promise<void> {
-    const oldText = this.el.innerText || '';
-    const length = Math.max(oldText.length, newText.length);
-    const promise = new Promise<void>((resolve) => {
-      this.resolve = resolve;
-    });
-
-    this.queue = [];
-    // Slow, deliberate sequential letter reveal:
-    // charDelay: frames between starting next letter (e.g., 6 frames ~= 0.10s)
-    // scrambleSpan: how long each letter scrambles before settling (e.g., 20 frames ~= 0.33s)
-    const charDelay = Math.round(6 * speedMultiplier);
-    const scrambleSpan = Math.round(20 * speedMultiplier);
-
-    for (let i = 0; i < length; i++) {
-      const from = oldText[i] || '';
-      const to = newText[i] || '';
-      const start = i * charDelay;
-      const end = start + scrambleSpan;
-      this.queue.push({ from, to, start, end });
-    }
-
-    if (this.frameRequest) {
-      cancelAnimationFrame(this.frameRequest);
-    }
-    this.frame = 0;
-    this.update();
-    return promise;
-  }
-
-  update() {
-    let output = '';
-    let complete = 0;
-
-    for (let i = 0, n = this.queue.length; i < n; i++) {
-      let { from, to, start, end, char } = this.queue[i];
-
-      if (this.frame >= end) {
-        complete++;
-        output += to;
-      } else if (this.frame >= start) {
-        if (!char || Math.random() < 0.22) {
-          char = this.chars[Math.floor(Math.random() * this.chars.length)];
-          this.queue[i].char = char;
-        }
-        output += `<span class="scramble-char">${char}</span>`;
-      } else {
-        output += from;
-      }
-    }
-
-    this.el.innerHTML = output;
-
-    if (complete === this.queue.length) {
-      if (this.resolve) this.resolve();
-    } else {
-      this.frameRequest = requestAnimationFrame(this.update);
-      this.frame++;
-    }
-  }
-
-  destroy() {
-    if (this.frameRequest) {
-      cancelAnimationFrame(this.frameRequest);
-    }
-  }
-}
-
 export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLHeadingElement>(null);
-  const orbRef = useRef<HTMLDivElement>(null);
-  const subRef = useRef<HTMLParagraphElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const adRef = useRef<HTMLSpanElement>(null);
+  const pivotRef = useRef<HTMLSpanElement>(null);
+  const tjainRef = useRef<HTMLSpanElement>(null);
+  const portfolioRef = useRef<HTMLDivElement>(null);
   const skipBtnRef = useRef<HTMLButtonElement>(null);
-  const scramblerRef = useRef<TextScramble | null>(null);
 
   const [isSkipped, setIsSkipped] = useState(false);
   const isCompletedRef = useRef(false);
@@ -129,7 +41,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         },
       });
 
-      tl.to([textRef.current, subRef.current, skipBtnRef.current, orbRef.current], {
+      tl.to([stageRef.current, skipBtnRef.current], {
         opacity: 0,
         y: -30,
         duration: 0.4,
@@ -168,61 +80,123 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
       return () => window.removeEventListener('keydown', handleKeyDown);
     }
 
-    if (textRef.current) {
-      scramblerRef.current = new TextScramble(textRef.current);
-    }
-
     const ctx = gsap.context(() => {
       const masterTl = gsap.timeline();
 
-      // Step 1: Center glowing Sand spark pulses (0.0s – 0.7s)
+      // Initial state: hide parts, position "i" high above
+      gsap.set(adRef.current, { opacity: 0, x: -35 });
+      gsap.set(tjainRef.current, { opacity: 0, x: 35 });
+      gsap.set(portfolioRef.current, { opacity: 0, y: 22 });
+      gsap.set(pivotRef.current, {
+        y: -300,
+        opacity: 0,
+        scale: 0.85,
+        transformOrigin: '50% 0%',
+      });
+
+      // Stage 1: "i" drops from up to down (0.2s – 0.95s)
       masterTl
-        .fromTo(
-          orbRef.current,
-          { scale: 0, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(1.8)' }
-        )
-        // Step 2: Scramble in the name "ADIT JAIN" letter-by-letter slowly
-        .call(async () => {
-          if (scramblerRef.current) {
-            await scramblerRef.current.setText('ADIT JAIN', 1.2);
+        .to(
+          pivotRef.current,
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.75,
+            ease: 'bounce.out',
+            delay: 0.25,
           }
-        }, undefined, '+=0.1')
-        .fromTo(
-          subRef.current,
-          { opacity: 0, y: 14 },
-          { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
-          '+=0.8'
         )
-        // Step 3: Hold on "ADIT JAIN" so user can absorb it (~1.4s)
-        // Step 4: Morph smoothly into "PORTFOLIO" letter-by-letter slowly
-        .call(async () => {
-          if (scramblerRef.current) {
-            await scramblerRef.current.setText('PORTFOLIO', 1.2);
+        // Stage 2: "i" swings left (0.95s – 1.45s)
+        .to(
+          pivotRef.current,
+          {
+            rotation: -28,
+            x: -24,
+            duration: 0.5,
+            ease: 'power2.out',
+          },
+          '+=0.1'
+        )
+        // As it swings left, "AD" appears on the left
+        .to(
+          adRef.current,
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.45,
+            ease: 'power2.out',
+          },
+          '-=0.35'
+        )
+        // Stage 3: "i" swings right (1.5s – 2.1s)
+        .to(
+          pivotRef.current,
+          {
+            rotation: 26,
+            x: 20,
+            duration: 0.58,
+            ease: 'power1.inOut',
+          },
+          '+=0.05'
+        )
+        // As it swings right, "T JAIN" appears on the right
+        .to(
+          tjainRef.current,
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.5,
+            ease: 'power2.out',
+          },
+          '-=0.45'
+        )
+        // Stage 4: "i" swings back to center and settles into place (2.15s – 2.8s)
+        .to(
+          pivotRef.current,
+          {
+            rotation: 0,
+            x: 0,
+            duration: 0.65,
+            ease: 'elastic.out(1, 0.4)',
           }
-        }, undefined, '+=1.4')
-        .to(subRef.current, {
-          opacity: 0,
-          y: -10,
-          duration: 0.4,
-        }, '-=0.2')
-        .to(orbRef.current, {
-          opacity: 0,
-          scale: 0.5,
-          duration: 0.4,
-        }, '-=0.3')
-        // Step 5: Hold on "PORTFOLIO" (~1.2s)
-        // Step 6: Curtain exit upward to reveal Hero page where portrait particles assemble
-        .call(() => {
-          finishPreloader();
-        }, undefined, '+=1.3');
+        )
+        // Subtle glow across the fully assembled "ADIT JAIN"
+        .to(
+          [adRef.current, pivotRef.current, tjainRef.current],
+          {
+            textShadow: '0 0 35px rgba(216, 203, 179, 0.55), 0 0 15px rgba(216, 203, 179, 0.3)',
+            duration: 0.4,
+            ease: 'power2.out',
+          },
+          '-=0.2'
+        )
+        // Stage 5: After "ADIT JAIN", "PORTFOLIO" text comes in!
+        .fromTo(
+          portfolioRef.current,
+          { opacity: 0, y: 22, letterSpacing: '0.28em' },
+          {
+            opacity: 1,
+            y: 0,
+            letterSpacing: '0.14em',
+            duration: 0.75,
+            ease: 'power3.out',
+          },
+          '+=0.3'
+        )
+        // Stage 6: Hold so the full composition is visible (~1.1s)
+        // Stage 7: Transition to hero section
+        .call(
+          () => {
+            finishPreloader();
+          },
+          undefined,
+          '+=1.1'
+        );
     }, containerRef);
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      if (scramblerRef.current) {
-        scramblerRef.current.destroy();
-      }
       ctx.revert();
     };
   }, [finishPreloader, handleSkip, onComplete]);
@@ -255,21 +229,26 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         </button>
       </div>
 
-      {/* Center Reel Stage: Morphing Typography (NO image inside preloader) */}
+      {/* Center Kinetic Stage: "i" Drops -> Swings Left ("AD") -> Swings Right ("T JAIN") -> "ADIT JAIN" -> "PORTFOLIO" */}
       <div className="preloader-center-stage">
-        <div className="preloader-text-area">
-          {/* Glowing Sand Dot / Spark */}
-          <div ref={orbRef} className="preloader-spark-orb" aria-hidden="true" />
+        <div ref={stageRef} className="preloader-kinetic-stage">
+          {/* Assembled Name Lockup */}
+          <div className="preloader-name-assembly" aria-label="Adit Jain">
+            <span ref={adRef} className="assembly-part assembly-left">
+              AD
+            </span>
+            <span ref={pivotRef} className="assembly-i-pivot">
+              <span className="assembly-i-letter">I</span>
+            </span>
+            <span ref={tjainRef} className="assembly-part assembly-right">
+              T&nbsp;JAIN
+            </span>
+          </div>
 
-          {/* Dynamic Morphing Title: "ADIT JAIN" -> "PORTFOLIO" */}
-          <h1 ref={textRef} className="preloader-morph-title">
-            <span className="scramble-char">!</span>
-          </h1>
-
-          {/* Subtitle that appears with name */}
-          <p ref={subRef} className="preloader-sub-tag">
-            Software Engineering Student | Full-Stack &amp; AI Developer
-          </p>
+          {/* PORTFOLIO reveal following ADIT JAIN */}
+          <div ref={portfolioRef} className="preloader-portfolio-wrap" aria-label="Portfolio">
+            <span className="preloader-portfolio-text">PORTFOLIO</span>
+          </div>
         </div>
       </div>
 
