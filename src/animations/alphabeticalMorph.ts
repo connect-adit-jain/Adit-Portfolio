@@ -2,7 +2,7 @@ import { gsap } from './gsap';
 
 export interface MorphCharSlot {
   cell: HTMLElement;
-  inner: HTMLElement;
+  inner?: HTMLElement;
 }
 
 export const CHAR_WIDTHS: Record<string, string> = {
@@ -48,87 +48,87 @@ export interface MorphOptions {
 }
 
 /**
- * Alphabetically morphs a set of character slots from one word to another.
- * Each character dynamically cycles through alphabetical letters towards its target.
+ * Buttery smooth, GPU-accelerated alphabetical morph without glow.
+ * Constructs smooth continuous vertical strips that roll cleanly through the alphabet.
  */
 export const runAlphabeticalMorph = ({
   slots,
   fromText,
   toText,
-  duration = 1.25,
+  duration = 1.15,
   delay = 0,
-  stagger = 0.035,
+  stagger = 0.04,
   onComplete,
 }: MorphOptions) => {
   const maxLen = Math.min(slots.length, Math.max(fromText.length, toText.length));
 
   slots.forEach((item, idx) => {
-    if (idx >= maxLen) return;
+    if (idx >= maxLen || !item.cell) return;
 
     const startC = (fromText[idx] || ' ').toUpperCase();
     const endC = (toText[idx] || ' ').toUpperCase();
 
-    // Compute sequence of alphabetical steps
-    const sequence: string[] = [];
+    // Build the alphabetical sequence of letters
+    const chars: string[] = [startC];
     if (startC === ' ') {
       const endIdx = ALPHABET.indexOf(endC);
-      const stepsCount = Math.min(8, (endIdx >= 0 ? endIdx : 5) + 1);
-      for (let s = 0; s < stepsCount; s++) {
-        sequence.push(ALPHABET[s % 26]);
-      }
-      sequence.push(endC);
+      const steps = Math.min(8, (endIdx >= 0 ? endIdx : 5) + 1);
+      for (let s = 0; s < steps; s++) chars.push(ALPHABET[s % 26]);
+      chars.push(endC);
     } else if (endC === ' ') {
       const startIdx = ALPHABET.indexOf(startC);
-      for (let s = 1; s <= 6; s++) {
-        sequence.push(ALPHABET[(startIdx + s) % 26]);
-      }
-      sequence.push(' ');
+      for (let s = 1; s <= 6; s++) chars.push(ALPHABET[(startIdx + s) % 26]);
+      chars.push(' ');
     } else {
       const startIdx = ALPHABET.indexOf(startC);
       const endIdx = ALPHABET.indexOf(endC);
       let diff = (endIdx - startIdx + 26) % 26;
-      if (diff < 7) diff += 26; // at least 7-8 steps for a rich alphabetical progression
+      if (diff < 7) diff += 26; // at least 7-8 alphabetical steps for smooth momentum
       for (let s = 1; s <= diff; s++) {
-        sequence.push(ALPHABET[(startIdx + s) % 26]);
+        chars.push(ALPHABET[(startIdx + s) % 26]);
       }
     }
 
-    const charDelay = delay + idx * stagger;
-    const charDuration = Math.max(0.4, duration - maxLen * stagger);
-    const stepTime = charDuration / sequence.length;
+    // Build smooth vertical strip
+    item.cell.innerHTML = '';
+    const strip = document.createElement('div');
+    strip.className = 'char-strip';
 
-    item.cell.classList.remove('settled');
-    item.cell.classList.add('cycling');
-
-    // Smoothly adapt slot width to target letter
-    gsap.to(item.cell, {
-      width: CHAR_WIDTHS[endC] || '0.6em',
-      duration: charDuration * 0.85,
-      delay: charDelay,
-      ease: 'power2.out',
+    chars.forEach((ch) => {
+      const span = document.createElement('span');
+      span.className = 'char-item';
+      span.textContent = ch === ' ' ? '\u00A0' : ch;
+      strip.appendChild(span);
     });
 
-    // Step through the letters of the alphabet
-    sequence.forEach((ch, sIdx) => {
-      gsap.delayedCall(charDelay + sIdx * stepTime, () => {
-        item.inner.textContent = ch === ' ' ? '\u00A0' : ch;
+    item.cell.appendChild(strip);
 
-        // Subtle micro-motion on each alphabetical tick
-        gsap.fromTo(
-          item.inner,
-          { yPercent: -14, opacity: 0.85 },
-          { yPercent: 0, opacity: 1, duration: stepTime * 0.85, ease: 'none' }
-        );
+    const charDelay = delay + idx * stagger;
+    const targetYPercent = -((chars.length - 1) / chars.length) * 100;
 
-        if (sIdx === sequence.length - 1) {
-          item.cell.classList.remove('cycling');
-          item.cell.classList.add('settled');
-        }
-      });
+    // Smooth GPU transform for the strip
+    gsap.fromTo(
+      strip,
+      { yPercent: 0 },
+      {
+        yPercent: targetYPercent,
+        duration: duration,
+        delay: charDelay,
+        ease: 'power2.inOut',
+      }
+    );
+
+    // Smooth slot width transition
+    gsap.to(item.cell, {
+      width: CHAR_WIDTHS[endC] || '0.6em',
+      duration: duration * 0.85,
+      delay: charDelay + 0.08,
+      ease: 'power2.out',
     });
   });
 
   if (onComplete) {
-    gsap.delayedCall(delay + duration + 0.08, onComplete);
+    const totalTime = delay + maxLen * stagger + duration + 0.05;
+    gsap.delayedCall(totalTime, onComplete);
   }
 };

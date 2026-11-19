@@ -167,7 +167,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         .to(iBoxRef.current, {
           rotation: 0,
           duration: 0.65,
-          ease: 'elastic.out(1, 0.45)',
+          ease: 'power3.out',
         })
         .to(
           iDotRef.current,
@@ -179,17 +179,6 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           },
           '-=0.42'
         )
-        // Ambient glow across perfectly aligned "ADIT JAIN"
-        .to(
-          stageRef.current,
-          {
-            textShadow:
-              '0 0 35px rgba(255, 255, 255, 0.55), 0 0 15px rgba(255, 255, 255, 0.3)',
-            duration: 0.35,
-            ease: 'power2.out',
-          },
-          '-=0.2'
-        )
         // ── STAGE 5: Letters of ADIT JAIN change alphabetically to PORTFOLIO ──
         .call(
           () => {
@@ -197,30 +186,24 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
               .filter((el): el is HTMLDivElement => el !== null)
               .map(cell => ({
                 cell,
-                inner: (cell.querySelector('.slot-inner') || cell) as HTMLElement,
               }));
 
             runAlphabeticalMorph({
               slots: morphSlots,
               fromText: 'ADIT JAIN',
               toText: 'PORTFOLIO',
-              duration: 1.25,
+              duration: 1.15,
               stagger: 0.035,
               onComplete: () => {
-                gsap.to(stageRef.current, {
-                  textShadow:
-                    '0 0 40px rgba(255, 255, 255, 0.65), 0 4px 30px rgba(0, 0, 0, 0.95)',
-                  duration: 0.4,
-                });
-                // Hold on PORTFOLIO (~1.1s), then curtain exit to hero!
-                gsap.delayedCall(1.1, () => {
+                // Hold on PORTFOLIO (~1.0s), then curtain exit to hero!
+                gsap.delayedCall(1.0, () => {
                   finishPreloader();
                 });
               },
             });
           },
           undefined,
-          '+=0.65' // pause on settled ADIT JAIN
+          '+=0.6' // clean pause on settled ADIT JAIN
         );
     }, containerRef);
 
